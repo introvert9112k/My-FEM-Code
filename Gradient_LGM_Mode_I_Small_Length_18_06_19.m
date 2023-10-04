@@ -11,7 +11,7 @@ L = 60; % Length of the plate
 D = 60; % Width of the plate
 numx = 80; % Number of elements in X direction
 numy = 80; % Number of elements in Y direction
-stressState='PLANE_STRAIN';
+stressState='PLANE_STRAIN'; %This defines the stressState chosen
 
 %---------------------Material Parameters------------------%
 nu = 0.2;  % Poisson's Ratio
