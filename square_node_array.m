@@ -1,5 +1,8 @@
 
 function X=square_node_array(pt1,pt2,pt3,pt4,numnod_u,numnod_v,uratio,vratio)
+    %nargin is a function that returns the number of input arguments that were passed to a function. 
+    %nargin is particularly useful for creating flexible functions that can handle varying numbers of input arguments 
+    %and adjust their behavior accordingly.
     if ( nargin < 6 )
         disp('Not enough parameters specified for square_node_array function') 
     elseif ( nargin == 6 )
@@ -7,7 +10,7 @@ function X=square_node_array(pt1,pt2,pt3,pt4,numnod_u,numnod_v,uratio,vratio)
         vratio=1;
     elseif ( nargin == 7 )
         vratio=1;
-    end
+    end 
 
     % get node spacing along u direction
     if ( uratio == 1 )
@@ -42,7 +45,7 @@ function X=square_node_array(pt1,pt2,pt3,pt4,numnod_u,numnod_v,uratio,vratio)
         disp('vratio must be greator than 0');
         eta_pts=linspace(-1,1,numnod_v);
     end
-
+   
     x_pts=[pt1(1),pt2(1),pt3(1),pt4(1)];
     y_pts=[pt1(2),pt2(2),pt3(2),pt4(2)];
 
