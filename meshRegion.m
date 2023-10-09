@@ -26,5 +26,5 @@ switch elemType
         error('For now, only Q4 and Q9 are supported by the mesh generator');
 end
 
-end % END OF FUNCTION meshRegion
+end % END OF FUNCTION meshRegion 
 

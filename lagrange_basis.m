@@ -20,6 +20,10 @@ function [Nv,dNdxi] = lagrange_basis(type,coord,dim)
             %    |                    |
             %    1--------------------2
             %
+            
+            %size(coord, 2) is asking for the size of the second dimension of 
+            %the matrix or array coord. In other words, it's the number of columns 
+            %in the matrix coord. 
             if size(coord,2) < 2
                 disp('Error two coordinates needed for the Q4 element')
             else
