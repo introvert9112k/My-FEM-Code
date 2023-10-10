@@ -146,10 +146,11 @@ total_strain = numnode2*3; % Total unknown strains i.e. 3 additional dof per nod
 total_unknown = total_disp + total_strain; % Total Unknowns
 u_tot =  zeros(total_disp,1); % Setting total unknown displacements to 0 initially
 strain_tot = zeros(total_strain,1); % Setting total nonlocal strains to 0 initially
-kappa = zeros(4*numelem,1); % History Parameter
-D_st= zeros(4*numelem,1); % Damage Variable vector
-NE_gp = zeros(4*numelem,1); % % Non-equivalent strain at Gauss Points
-stress_gp = zeros(4*numelem,3);
+%numelem mean no of elements in the mesh
+kappa = zeros(4*numelem,1); % History Parameter, value of kappa at each gauss point.
+D_st= zeros(4*numelem,1); % Damage Variable vector,damage value at each gauss point.
+NE_gp = zeros(4*numelem,1); % % Non-equivalent strain at Gauss Points,at each gauss point
+stress_gp = zeros(4*numelem,3); %stress values at each gauss point.
 forcevdisp = zeros(2,nsteps+1);
 forcevdisp(1,1) = 0;
 forcevdisp(2,1) = 0;
@@ -160,20 +161,20 @@ kappa0 = zeros(4*numelem,1); % Setting Initial History Variable
 kappa0(:,1) = ft/E; % Tensile Strength/Elastic Modulus 'ft/E'
 
 
-DAMAGE_DATA = [];
-NESTRAIN_DATA = [];
-DISP_DATA = [];
-NESTRAIN_DATA_NODES = [];
-INTERNAL_FORCE = [];
+DAMAGE_DATA = []; %damage data
+NESTRAIN_DATA = []; %non local equivalent strain data
+DISP_DATA = []; %displacement data
+NESTRAIN_DATA_NODES = []; %non local equivalent strain at nodes
+INTERNAL_FORCE = []; %internal force data
 INTERACTION_DATA = [];
-SIGMA_XX = [];
+SIGMA_XX = []; 
 SIGMA_YY = [];
 SIGMA_XY = [];    
 SIGMA_XX_smooth = [];
 SIGMA_YY_smooth = [];
 SIGMA_XY_smooth = [];
-EQ_STRESS = [];
-NEQ_STRESS = [];
+EQ_STRESS = []; %equivalent stress
+NEQ_STRESS = []; %non equivalent stress
 
 %-----------------------Newton Raphson Loop-----------------------------% 
 disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])

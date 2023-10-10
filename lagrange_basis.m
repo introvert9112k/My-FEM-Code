@@ -28,6 +28,8 @@ function [Nv,dNdxi] = lagrange_basis(type,coord,dim)
                 disp('Error two coordinates needed for the Q4 element')
             else
                 xi=coord(1); eta=coord(2);
+                %N gives the shape functions of the node located at point
+                %[xi,eta]
                 N=1/4*[ (1-xi)*(1-eta);
                     (1+xi)*(1-eta);
                     (1+xi)*(1+eta);
