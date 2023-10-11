@@ -179,27 +179,29 @@ NEQ_STRESS = []; %non equivalent stress
 %-----------------------Newton Raphson Loop-----------------------------% 
 disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
 for step = 1 : nsteps
-    err3 = 1;
-    nit = 0;
+    err3 = 1; %this is for intial tolerance.
+    nit = 0;  %current iterations for this step
     Fint = zeros(total_unknown,1);
-    fprintf(1,'\n Step %f Load %f\n',step);
+    fprintf(1,'\n Step %f \n',step);
     
     %-----------For 270 Load Steps-----------%   
     if step<=5 
-    ubar = 0.012;    
+    ubar = 0.012; %displacement for the steps <= 5    
     elseif step>5 
-    ubar = 3e-3; 
+    ubar = 3e-3; %displacement for the steps > 5.
     end
-       
+    
+    %Iterate until either the answer is converged or max iterations are 
+    %reached.
     while ((err3>tol) && (nit<maxit))          % Newton Raphson loop
        
-        nit = nit + 1;
+        nit = nit + 1; %incrementing the iterations
         
         % Computing Stiffness Matrix and Internal Force Vector
         [K,FAI,FE,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress] = globalstiffness(u_tot,strain_tot,D_st,material_p,De,damage_p,numelem,total_disp,...
             total_strain,node1,element1,element2,node2,elemType1,elemType2,kappa0,kappa,NE_gp,stress_gp);                     
              
-        Fint = [FAI;FE];
+        Fint = [FAI;FE]; %internal forces vector
         R = Fint;
         
         % ------------------------------------------------
@@ -219,7 +221,7 @@ for step = 1 : nsteps
         Kres(:,upper_disp_node) = 0;
         Kres(upper_disp_node,upper_disp_node) = bcwt*speye(length(upper_disp_node));
         
-        if nit==1
+        if nit == 1 
             for kk = 1:total_unknown               
                 for ll = 1:length(upper_disp_node)
                     zz = upper_disp_node(ll);

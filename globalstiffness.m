@@ -9,9 +9,9 @@ beta = damage_p(1,3);
 hcoup = damage_p(1,4);
 R = damage_p(1,5);
 eta = damage_p(1,6);
-stress_gp_sm = zeros(4*numelem,3);
-eq_stress = zeros(4*numelem,1);
-neq_stress = zeros(4*numelem,1);
+stress_gp_sm = zeros(4*numelem,3); %3 state of stress at gauss point
+eq_stress = zeros(4*numelem,1); %equivalent stress at each gauss point
+neq_stress = zeros(4*numelem,1); %non local equivalent stress at each gauss point.
 
 %-----------------Material Parameters-------------------%
 nu = material_p(1,1); % Poisson Ratio
