@@ -183,7 +183,7 @@ for step = 1 : nsteps
     err3 = 1; %this is for intial tolerance.
     nit = 0;  %current iterations for this step
     Fint = zeros(total_unknown,1);
-    fprintf(1,'\n Step %f \n',step,ubar);
+    fprintf(1,'\n Step %f \n',step);
     
     %-----------For 270 Load Steps-----------%   
     if step<=5 
