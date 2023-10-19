@@ -6,7 +6,7 @@ function [Nv,dNdxi] = lagrange_basis(type,coord,dim)
 
     switch type
         case 'Q4'
-            %%%%%%%%%%%%%%% Q4 FOUR NODE QUADRILATERIAL ELEMENT %%%%%%%%%%%%%%% %%%%%%%%%%%%%%%% Hello 
+            %%%%%%%%%%%%%%% Q4 FOUR NODE QUADRILATERIAL ELEMENT %%%%%%%%%%%%%%% %%%%%%%%%%%%%%%% 
             %
             %    4--------------------3
             %    |                    |
