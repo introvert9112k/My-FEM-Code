@@ -46,14 +46,14 @@ function X=square_node_array(pt1,pt2,pt3,pt4,numnod_u,numnod_v,uratio,vratio)
         eta_pts=linspace(-1,1,numnod_v);
     end
    
-    x_pts=[pt1(1),pt2(1),pt3(1),pt4(1)];
-    y_pts=[pt1(2),pt2(2),pt3(2),pt4(2)];
+    x_pts=[pt1(1),pt2(1),pt3(1),pt4(1)]; %x direction points of the specimen.
+    y_pts=[pt1(2),pt2(2),pt3(2),pt4(2)]; %y direction points of the specimen.
 
     for r=1:numnod_v
-        eta=eta_pts(r);
+        eta=eta_pts(r); %y coordinate
         for c=1:numnod_u
-            xi=xi_pts(c);
-            % get interpolation basis at xi, eta
+            xi=xi_pts(c); %x coordinate
+            % get interpolation basis at xi, eta 
             N=lagrange_basis('Q4',[xi,eta]);
             N=N(:,1);
             X((r-1)*numnod_u+c,:)=[x_pts*N,y_pts*N];

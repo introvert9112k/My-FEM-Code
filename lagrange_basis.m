@@ -82,16 +82,16 @@ function [Nv,dNdxi] = lagrange_basis(type,coord,dim)
             N=[]; dNdxi=[];
     end
 
-    I=eye(dim);
+    I=eye(dim); % [1]
     Nv=[];
-    
-        for i=1:size(N,1)
-            Nv=[Nv;I*N(i)];
+       
+        for i=1:size(N,1) %size(N,1) no of rows in matrix N i.e 4
+            Nv=[Nv;I*N(i)]; %Nv = [N1; N2; N3; N4];
         end
 
     if ( dim == 1 )
         B=dNdxi;
-    elseif ( dim == 2 )
+    elseif ( dim == 2 ) 
         B=zeros(dim*size(N,1),3);
 
         B(1:dim:dim*size(N,1)-1,1) = dNdxi(:,1);

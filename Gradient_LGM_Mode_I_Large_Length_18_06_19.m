@@ -16,7 +16,7 @@ stressState='PLANE_STRAIN';
 %---------------------Material Parameters------------------%
 nu = 0.2;  % Poisson's Ratio
 E  = 1000; % Elastic Moduli
-cc = 0.2*L; % Internal length i.e. Small Length Scale
+cc = 0.2*L; % Internal length i.e. large Length Scale L/5
 h = 1;
 material_p =[nu, E, cc, h]; % Material Parameters
 

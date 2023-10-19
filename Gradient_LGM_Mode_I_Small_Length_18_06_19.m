@@ -15,8 +15,8 @@ stressState='PLANE_STRAIN'; %This defines the stressState chosen
 
 %---------------------Material Parameters------------------%
 nu = 0.2;  % Poisson's Ratio
-E  = 1000; % Elastic Moduli
-cc = 0.04*L; % Internal length i.e. Small Length Scale
+E  = 1000; % Elastic Moduli,in MPa
+cc = 0.04*L; % Internal length i.e. Small Length Scale paramter L/25
 h = 1;
 material_p =[nu, E, cc, h]; % Material Parameters
 
@@ -29,11 +29,12 @@ maxit = 100; % Maximum Number of iterations in a single Load increment step i.e.
 %-----------------Damage Parameters---------------------%
 K = 10; % Sensitivity Parameter i.e. Governs the sensitivity in compression relative to that in tension. 
        % Usually it is set equal to the ratio of compressive strength and tensile strength.
-alpha = 0.99; % Controls the residual interactions
-beta = 9; % Controls the Slope of Softening Curve
+       %For calculating the modified von moises equivalent strain.
+alpha = 0.99; % Controls the residual interactions,present in damage evolution law
+beta = 9; % Controls the Slope of Softening Curve,present in damage evolution law.
 hcoup = E*1e-9; % Coupling Modulus
-R = 0.04;
-eta = 4;
+R = 0.04; %require in interaction function g.
+eta = 4; %require in interaction function g.
 ft = 2;  % Tensile Strength in MPa
 damage_p =[K alpha beta hcoup R eta]; % Damage Parameters
 
@@ -182,7 +183,7 @@ for step = 1 : nsteps
     err3 = 1; %this is for intial tolerance.
     nit = 0;  %current iterations for this step
     Fint = zeros(total_unknown,1);
-    fprintf(1,'\n Step %f \n',step);
+    fprintf(1,'\n Step %f \n',step,ubar);
     
     %-----------For 270 Load Steps-----------%   
     if step<=5 
