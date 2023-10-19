@@ -6,7 +6,7 @@ function [Nv,dNdxi] = lagrange_basis(type,coord,dim)
 
     switch type
         case 'Q4'
-            %%%%%%%%%%%%%%% Q4 FOUR NODE QUADRILATERIAL ELEMENT %%%%%%%%%%%%%%%%
+            %%%%%%%%%%%%%%% Q4 FOUR NODE QUADRILATERIAL ELEMENT %%%%%%%%%%%%%%% %%%%%%%%%%%%%%%% Hello 
             %
             %    4--------------------3
             %    |                    |
@@ -22,7 +22,8 @@ function [Nv,dNdxi] = lagrange_basis(type,coord,dim)
             %
             
             %size(coord, 2) is asking for the size of the second dimension of 
-            %the matrix or array coord. In other words, it's the number of columns 
+            %the matrix or array coord. In other words, it's the number of
+            %columns 
             %in the matrix coord. 
             if size(coord,2) < 2
                 disp('Error two coordinates needed for the Q4 element')
