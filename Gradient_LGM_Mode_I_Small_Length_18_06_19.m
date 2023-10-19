@@ -3,7 +3,8 @@
 
 % Gradient_LGM_Mode_I_Small_Length_18_06_19
 
-%-----Localizing Gradient Damage Model based on Smooothed Stresses and Anisotropic Interaction Kernel------%
+%-----Localizing Gradient Damage Model based on Smooothed Stresses and
+%Anisotropic Interaction Kernel------% 
 clc;
 tic;
 close all;
