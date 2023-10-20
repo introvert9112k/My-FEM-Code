@@ -54,7 +54,10 @@ function X=square_node_array(pt1,pt2,pt3,pt4,numnod_u,numnod_v,uratio,vratio)
         for c=1:numnod_u
             xi=xi_pts(c); %x coordinate
             % get interpolation basis at xi, eta 
+            %lagrange_basis returns [Nv,dN/dxi],so N = [Nv,dN/dxi]
+            %Nv is the 4x1 matrix of shape functions.
             N=lagrange_basis('Q4',[xi,eta]);
+            %assinging Nv to N i.e N = [N1; N2; N3; N4]
             N=N(:,1);
             X((r-1)*numnod_u+c,:)=[x_pts*N,y_pts*N];
         end

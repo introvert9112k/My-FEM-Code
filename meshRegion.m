@@ -10,7 +10,7 @@ switch elemType
         inc_u=1;
         inc_v=nnx;
         node_pattern=[ 1 2 nnx+2 nnx+1 ];
-        [element]=make_elem(node_pattern,numx,numy,inc_u,inc_v);
+        [element]= make_elem(node_pattern,numx,numy,inc_u,inc_v);
 
     case 'Q8'           % here we generate a mesh of Q9 elements
         nnx=numx+1;
