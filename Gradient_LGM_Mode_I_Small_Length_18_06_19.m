@@ -151,8 +151,8 @@ strain_tot = zeros(total_strain,1); % Setting total nonlocal strains to 0 initia
 %numelem mean no of elements in the mesh
 kappa = zeros(4*numelem,1); % History Parameter, value of kappa at each gauss point.
 D_st= zeros(4*numelem,1); % Damage Variable vector,damage value at each gauss point.
-NE_gp = zeros(4*numelem,1); % % Non-equivalent strain at Gauss Points,at each gauss point
-stress_gp = zeros(4*numelem,3); %stress values at each gauss point.
+NE_gp = zeros(4*numelem,1); % % Non-equivalent strain at each gauss point
+stress_gp = zeros(4*numelem,3); %stress values at each gauss point.We have 3 stresses at each gauss point.
 forcevdisp = zeros(2,nsteps+1);
 forcevdisp(1,1) = 0;
 forcevdisp(2,1) = 0;
