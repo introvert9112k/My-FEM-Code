@@ -64,6 +64,10 @@ pt1 = [0 0] ; pt2 = [L 0] ; pt3 = [L D] ; pt4 = [0 D] ;
 elemType1 = 'Q4' ;
 elemType2 = 'Q4' ;
 
+%node1 stores the location of all the nodes in global coordinate system.
+%element1 stores the row numbers corresponding to the nodes of particular element in the node1. 
+%For example node numbers for the 1st element is [1,2,83,82].That mean
+%coordinates at these locations in the node1 matrix form element1.
 [node1,element1] = meshRegion(pt1, pt2, pt3, pt4, numx, numy,elemType1);
 
 [node2,element2] = meshRegion(pt1, pt2, pt3, pt4, numx, numy,elemType2);

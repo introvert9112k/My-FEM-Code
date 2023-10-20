@@ -60,11 +60,10 @@ for iel = 1:numelem % Loop on elements
     fai_gpt = zeros(s1,1);
     fe_gpt = zeros(s2,1);  
     
-    %iterating over each gauss point in element
     for kk = 1 : size(W,1) 
         
         gpnt = gpnt + 1;
-        e_tilde1 = kappa(gpnt,1); % Non-equivalent strain at current gauss point of element   
+        e_tilde1 = kappa(gpnt,1); % Non-equivalent strain     
         pt = Q(kk,:);   % Quadrature point       
         [B1,J01] = xfemBmatrix1(pt,elemType1,iel,node1,element1); % B matrix and Jacobian for displacement vector         
         [N2,B2] = xfemBmatrix2(pt,elemType2,iel,node2,element2); % Shape Function
