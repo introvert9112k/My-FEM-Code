@@ -40,14 +40,14 @@ S = zeros(400*numelem,1);
 index = 0;
 
 for iel = 1:numelem % Loop on elements  
-    sctr = element2(iel,:); % Element connectivity 
-    sctr1 = assembly(iel,element1);  
+    sctr = element2(iel,:); % location of the nodes of the current element in node1
+    sctr1 = assembly(iel,element1);  %location of displacements of current element nodes in u_total [total displacements]
     sctr3 = assembly_nonlocal(sctr,total_disp);
-    sctr2 = sctr3 - total_disp;
+    sctr2 = sctr3 - total_disp; %location of strains of current element nodes in strain_tot
     
     % Choose Gauss quadrature rules for elements
     order = 2;
-    [W,Q] = quadrature(order,'GAUSS',2);
+    [W,Q] = quadrature(order,'GAUSS',2); %Q = quadrature points and W = quadrature weights
 
     u_local = u_tot(sctr1,:);  % Displacement corresponding to each node of the element  
     strain_nonlocal = strain_tot(sctr2,:); % Non-local Equivalent strain corresponding to each node of the element

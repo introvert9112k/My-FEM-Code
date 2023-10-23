@@ -179,7 +179,7 @@ SIGMA_XY = [];
 SIGMA_XX_smooth = [];
 SIGMA_YY_smooth = [];
 SIGMA_XY_smooth = [];
-EQ_STRESS = []; %equivalent stress
+EQ_STRESS = [];  %equivalent stress
 NEQ_STRESS = []; %non equivalent stress
 
 %-----------------------Newton Raphson Loop-----------------------------% 
