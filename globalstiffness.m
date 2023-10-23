@@ -75,6 +75,7 @@ for iel = 1:numelem % Loop on elements
         kappa0_gpt = kappa0(gpnt,1);      
 
         % Computing Nonlocal Equivalent Strain from Nonlocal Strain Vector
+        % using modified von mises strain definition. 
         a1 = 1/(2*k);
         a2 = (k-1)/(1-2*nu);
         a3 = (2*k)/((1+nu)^2);
@@ -121,6 +122,9 @@ for iel = 1:numelem % Loop on elements
         
         f = eps_nl - e_tilde1; % Damage Loading Function
         
+        %if the non-local equivalent strain at current point > k,then
+        %update k with current strain, because f <= 0.
+        %kappa_gpt stores the maximum value of kappa achieved so far.
         if f>=0
             kappa_gpt = eps_nl;
         else
