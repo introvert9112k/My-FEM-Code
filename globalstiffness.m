@@ -135,6 +135,7 @@ for iel = 1:numelem % Loop on elements
         Omega = compute_damage(kappa_gpt,kappa0_gpt,alpha,beta);
         
         %------------------Constitutive Relations---------------------%
+        %micromorphic stress vector.
         sm_stress_gpt = De*(1-Omega)*strain_gpt_nonlocal; % Smooth Stress Vector
 %         sm_stress_gpt = De*strain_gpt_nonlocal; % Smooth Stress Vector
         
@@ -147,7 +148,8 @@ for iel = 1:numelem % Loop on elements
         sigxx = sm_stress_gpt(1,1);
         sigyy = sm_stress_gpt(2,1);
         sigxy = sm_stress_gpt(3,1);                         
- 
+        
+        %calculating micromorphic prinicpal stress components.
         [sigma1, sigma2, theta] = Compute_Principal_Stress(sm_stress_gpt);
         ptheta = (pi/180)*theta;
         Rot = [cos(ptheta) -sin(ptheta); sin(ptheta) cos(ptheta)];
