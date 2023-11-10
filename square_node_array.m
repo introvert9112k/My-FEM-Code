@@ -1,6 +1,17 @@
 
 function X=square_node_array(pt1,pt2,pt3,pt4,numnod_u,numnod_v,uratio,vratio)
-    %nargin is a function that returns the number of input arguments that were passed to a function. 
+% Generates a quadratleral array of nodes between the counterclockwise
+% ordering of nodes pt1 - pt4.  There are numnod_u nodes in the u direction
+% (pt1 - pt2) and numnode_v nodes in the v direction (pt2 - pt3).  The
+% parameter uratio and vratio determint the nodal spacing along the u and v
+% lines.  If no values of uratio and/or vratio are given values of unity are
+% assumed which resulets in uniformed node spacng along the u an v directions.
+% uratio and v ratio  are the ratio of the first node spacing to the last
+% node spacing along th u of v direction respectivly (the first spacing
+% occurs near pt 1 and teh last near pt3.
+
+
+   %nargin is a function that returns the number of input arguments that were passed to a function. 
     %nargin is particularly useful for creating flexible functions that can handle varying numbers of input arguments 
     %and adjust their behavior accordingly.
     if ( nargin < 6 )

@@ -266,7 +266,7 @@ for iel = 1:numelem % Loop on elements
         Eklp = permute(Eklp_1,[1 3 2]);                      
         dcdu(:,:) = Eklp*Y2;
         
-        end
+        end   
         
         C_grad = c_len*g_int*Cbar;
         

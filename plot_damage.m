@@ -11,15 +11,15 @@ numy = 80; % Number of elements in Y direction
 load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9.mat');
 
 % Principle Stress Based Localizing GDM
-step = [1 15 30]; % Small Length Scale
+step = [1 15,20,25,30]; % Small Length Scale
 % step = [98 195 270];  % Large Length Scale
 
 % Conventional Localizing GDM
 % step = [30 75 230]; % Small Length Scale
 % step = [22 75 200];  % Large Length Scale
 
-% loading = 'MODE_I';
-loading = 'COMPRESSION';
+loading = 'MODE_I';
+%loading = 'COMPRESSION';
 
 %------------------Material Parameters------------------%
 if (strcmp(loading,'MODE_I') )
@@ -87,7 +87,7 @@ figure
 
 % subplot dimension
 n1 = 1; % number of rows
-n2 = 3; % number of columns
+n2 = 5; % number of columns
 
 % These values would define the space between the graphs
 % if equal to 1 there will be no space between graphs
@@ -110,10 +110,10 @@ for k1 = 1:n1
             shading interp
             set(gcf, 'color', 'white');
             axis equal
-            axis off
+            %axis off
             
     end
 end
 
-end
+end 
 

@@ -184,7 +184,7 @@ NEQ_STRESS = []; %non equivalent stress
 
 %-----------------------Newton Raphson Loop-----------------------------% 
 disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
-for step = 1 : nsteps
+for step = 1 : nsteps 
     err3 = 1; %this is for intial tolerance.
     nit = 0;  %current iterations for this step
     Fint = zeros(total_unknown,1);
