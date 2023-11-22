@@ -167,20 +167,20 @@ kappa0 = zeros(4*numelem,1); % Setting Initial History Variable
 kappa0(:,1) = ft/E; % Tensile Strength/Elastic Modulus 'ft/E'
 
 
-DAMAGE_DATA = []; %damage data
-NESTRAIN_DATA = []; %non local equivalent strain data
-DISP_DATA = []; %displacement data
-NESTRAIN_DATA_NODES = []; %non local equivalent strain at nodes
+DAMAGE_DATA = []; %damage value at each guass point [25600] at each load step 30. size = [25600x30]  
+NESTRAIN_DATA = []; %non local equivalent strain data at each guass point [25600] at each load step 30. size = [25600x30] 
+DISP_DATA = []; %displacement at each node [81x81],each node has 2 displacements i.e 81x81x2 at each load step. size = [13122x30]
+NESTRAIN_DATA_NODES = []; %Strain at nodes [81x81],each node has 3 strains i.e 81x81x2 at each load step. size = [19683x30]
 INTERNAL_FORCE = []; %internal force data
 INTERACTION_DATA = [];
-SIGMA_XX = []; 
-SIGMA_YY = [];
-SIGMA_XY = [];    
-SIGMA_XX_smooth = [];
+SIGMA_XX = []; %sigma_xx stress at each guass point [25600] at each load step [25600x30]
+SIGMA_YY = []; %sigma_xx stress at each guass point [25600] at each load step [25600x30]
+SIGMA_XY = []; %sigma_xx stress at each guass point [25600] at each load step [25600x30]  
+SIGMA_XX_smooth = []; 
 SIGMA_YY_smooth = [];
 SIGMA_XY_smooth = [];
-EQ_STRESS = [];  %equivalent stress
-NEQ_STRESS = []; %non equivalent stress
+EQ_STRESS = [];  %Equivalent stress at each guass point at each load step [25600x30]
+NEQ_STRESS = []; %Non local Equivalent stress at each guass point at each load step [25600x30]
 
 %-----------------------Newton Raphson Loop-----------------------------% 
 disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
