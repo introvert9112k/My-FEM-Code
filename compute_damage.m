@@ -1,4 +1,3 @@
-
 function [Omega] = compute_damage(kappa_gpt,kappa0_gpt,alpha,beta)
     if kappa_gpt < kappa0_gpt %i.e f >= 0, non local equivalent strain < K0,hence there is no damage.
         Omega = 0;
