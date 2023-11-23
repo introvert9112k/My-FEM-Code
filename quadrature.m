@@ -19,10 +19,10 @@ if ( strcmp(qt,'GAUSS') == 1 )
         quadorder =8;
     end
 
-    quadpoint=zeros(quadorder^sdim ,sdim);
-    quadweight=zeros(quadorder^sdim,1);
+    quadpoint=zeros(quadorder^sdim ,sdim); %guass point locations
+    quadweight=zeros(quadorder^sdim,1);    %Weight of each point 
 
-    r1pt=zeros(quadorder,1); r1wt=zeros(quadorder,1);
+    r1pt=zeros(quadorder,1); r1wt=zeros(quadorder,1); 
 
     switch ( quadorder )
         case 1
@@ -30,7 +30,7 @@ if ( strcmp(qt,'GAUSS') == 1 )
             r1wt(1) = 2.000000000000000;
 
         case 2
-            r1pt(1) = 0.577350269189626;
+            r1pt(1) = 0.577350269189626; %(x,y) combinations of this gives the locations for each point..
             r1pt(2) =-0.577350269189626;
 
             r1wt(1) = 1.000000000000000;
@@ -133,7 +133,8 @@ if ( strcmp(qt,'GAUSS') == 1 )
             quadweight(n) = r1wt(i);
             n = n+1;
         end
-
+   
+    %Finding the guass point and asscoiated weight with it.
     elseif ( sdim == 2 )
         for i = 1:quadorder
             for j = 1:quadorder

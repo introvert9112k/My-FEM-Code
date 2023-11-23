@@ -1,7 +1,7 @@
 
 function sctrB = assembly_nonlocal(sctr,total_disp_local)
 
-nn   = length(sctr); % Number of nodes
+nn   = length(sctr); % Number of nodes.
 sctr_n = zeros(1,nn);
 for i = 1:nn
 a = sctr(i);    

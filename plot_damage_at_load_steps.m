@@ -1,19 +1,25 @@
 %--------------------------Plot Output:Damage-----------------------------%
 
+
 function plot_damage
 
 close all; clc;
 L = 60; % Length of the plate
 D = 60; % Width of the plate
-numx = 60; % Number of elements in X direction
-numy = 60; % Number of elements in Y direction
-% load('Mode_I_80by80_Beta_60_30_10_18_3_eta_5_R_dot04');
-load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9');
+numx = 80; % Number of elements in X direction
+numy = 80; % Number of elements in Y direction
+load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9.mat');
 
-check_step = 20;
+% Principle Stress Based Localizing GDM
+step = [1 15,20,30]; % Small Length Scale
+% step = [98 195 270];  % Large Length Scale
+
+% Conventional Localizing GDM
+% step = [30 75 230]; % Small Length Scale
+% step = [22 75 200];  % Large Length Scale
 
 loading = 'MODE_I';
-% loading = 'COMPRESSION';
+%loading = 'COMPRESSION';
 
 %------------------Material Parameters------------------%
 if (strcmp(loading,'MODE_I') )
@@ -71,26 +77,43 @@ elseif (strcmp(elemType,'Q4') )
 end
 
 % updated_node = zeros(numnode,2);
-% u_x = DISP_DATA(1:2:2*numnode,check_step);
-% u_y = DISP_DATA(2:2:2*numnode,check_step);
+% u_x = DISP_DATA(1:2:2*numnode,step1);
+% u_y = DISP_DATA(2:2:2*numnode,step1);
 % updated_node(:,1) = node(:,1) + u_x;
 % updated_node(:,2) = node(:,2) + u_y;
 
 %--------------------- Damage Plot-------------------------%
 figure
-hold on
-tri = delaunay(GPT_DATA(:,1),GPT_DATA(:,2));
-patch('Vertices',GPT_DATA,'Faces',tri,'FaceVertexCData',DAMAGE_DATA(:,check_step));
-% plot_mesh(node,element,elemType,'r-');
-% plot(GPT_DATA(:,1),GPT_DATA(:,2),'.');
-colormap('jet');
-colorbar 
-shading interp
-set(gcf, 'color', 'white');
-axis equal
-axis off
-title("Damage")
+
+% subplot dimension
+n1 = 1; % number of rows
+n2 = length(step); % number of columns
+
+% These values would define the space between the graphs
+% if equal to 1 there will be no space between graphs
+nw = 0.95; % normalized width
+nh = 0.95; % normalized height
+
+for k1 = 1:n1
+    for k2 = 1:n2
+            st = step(k2);
+            subplot(n1,n2,(k1-1)*n2 + k2,...
+            'position', [(1-nw)/n2/2 + (k2-1)/n2, (1-nh)/n1/2 + 1-k1/n1,...
+            nw/n2 nh/n1]);
+            tri = delaunay(GPT_DATA(:,1),GPT_DATA(:,2));
+            patch('Vertices',GPT_DATA,'Faces',tri,'FaceVertexCData',DAMAGE_DATA(:,st));  
+            %plot_mesh(node,element,elemType,'r-');
+            hold on
+            plot([0.5 L/2],[0.5 0.5],'-k','LineWidth',2);
+            colormap('jet');
+            % colorbar 
+            shading interp
+            set(gcf, 'color', 'white');
+            axis equal
+            axis off
+            
+    end
+end
 
 end 
 
-% End of the function 

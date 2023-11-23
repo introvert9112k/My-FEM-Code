@@ -23,7 +23,7 @@ material_p =[nu, E, cc, h]; % Material Parameters
 
 % Newton-Raphson Parameters
 
-nsteps = 2; % Number of Load Increments i.e. Load is applied in "nsteps" increments
+nsteps = 1; % Number of Load Increments i.e. Load is applied in "nsteps" increments
 tol = 0.00001; % Tolerance Value to check Newton-Raphson convergence
 maxit = 100; % Maximum Number of iterations in a single Load increment step i.e. Newton-Raphson iterations
 
@@ -183,7 +183,7 @@ EQ_STRESS = [];  %Equivalent stress at each guass point at each load step [25600
 NEQ_STRESS = []; %Non local Equivalent stress at each guass point at each load step [25600x30]
 
 %-----------------------Newton Raphson Loop-----------------------------% 
-disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS']) 
+disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
 for step = 1 : nsteps 
     err3 = 1; %this is for intial tolerance.
     nit = 0;  %current iterations for this step

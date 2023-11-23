@@ -1,7 +1,4 @@
-%--------------------------Plot Output:Damage-----------------------------%
-
-function plot_damage
-
+function plot_non_local_eq_strain
 close all; clc;
 L = 60; % Length of the plate
 D = 60; % Width of the plate
@@ -69,28 +66,16 @@ elseif (strcmp(elemType,'Q4') )
     dispNodes = botNodes; % Displacement B.C nodes
     tracNodes = topNodes; % Traction B.C. nodes
 end
-
-% updated_node = zeros(numnode,2);
-% u_x = DISP_DATA(1:2:2*numnode,check_step);
-% u_y = DISP_DATA(2:2:2*numnode,check_step);
-% updated_node(:,1) = node(:,1) + u_x;
-% updated_node(:,2) = node(:,2) + u_y;
-
-%--------------------- Damage Plot-------------------------%
 figure
 hold on
 tri = delaunay(GPT_DATA(:,1),GPT_DATA(:,2));
-patch('Vertices',GPT_DATA,'Faces',tri,'FaceVertexCData',DAMAGE_DATA(:,check_step));
+patch('Vertices',GPT_DATA,'Faces',tri,'FaceVertexCData',NESTRAIN_DATA(:,check_step));
 % plot_mesh(node,element,elemType,'r-');
-% plot(GPT_DATA(:,1),GPT_DATA(:,2),'.');
 colormap('jet');
 colorbar 
 shading interp
 set(gcf, 'color', 'white');
 axis equal
 axis off
-title("Damage")
-
+title("Non Local Equivalent Strain");
 end 
-
-% End of the function 
