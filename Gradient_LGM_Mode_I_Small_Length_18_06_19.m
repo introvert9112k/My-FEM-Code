@@ -23,7 +23,7 @@ material_p =[nu, E, cc, h]; % Material Parameters
 
 % Newton-Raphson Parameters
 
-nsteps = 30; % Number of Load Increments i.e. Load is applied in "nsteps" increments
+nsteps = 2; % Number of Load Increments i.e. Load is applied in "nsteps" increments
 tol = 0.00001; % Tolerance Value to check Newton-Raphson convergence
 maxit = 100; % Maximum Number of iterations in a single Load increment step i.e. Newton-Raphson iterations
 
@@ -113,12 +113,12 @@ elseif ( strcmp(elemType1,'Q4') )
     botEdge  = [ lln:1:(lrn-1); (lln+1):1:lrn ]';
     botNodes   = unique(botEdge);
     topNodes   = unique(topEdge);
-    dispNodes = botNodes; % Displacement B.C nodes
-    tracNodes = topNodes; % Traction B.C. nodes
+    dispNodes = botNodes; % Displacement B.C nodes [1,81]
+    tracNodes = topNodes; % Traction B.C. nodes    [6481,6561]
     
     % GET NODES For MODE I Problem
     rnodes = 1:(numx/2);
-    dispNodes1 = setdiff(dispNodes,rnodes);
+    dispNodes1 = setdiff(dispNodes,rnodes); %Second half of the bottom edge nodes.
 end
 
 %-----------------------Plot Mesh-------------------------------% 
@@ -140,8 +140,8 @@ axis off
 udofs = 2*tracNodes(1,1) - 1;
 vdofs = dispNodes1.*2;
 
-upper_disp_node = tracNodes.*2;
-lower_nodes = (dispNodes)*2;
+upper_disp_node = tracNodes.*2; %This gives the location of the vertical displacement for the topEdge Nodes in u_tot 
+lower_nodes = (dispNodes)*2; %This gives the location of the vertical displacement for the bottomEdge Nodes in u_tot 
 l_nodes = [dispNodes.*2; dispNodes.*2-1];
 
 %--------------------------------------------------------------------------%
@@ -183,7 +183,7 @@ EQ_STRESS = [];  %Equivalent stress at each guass point at each load step [25600
 NEQ_STRESS = []; %Non local Equivalent stress at each guass point at each load step [25600x30]
 
 %-----------------------Newton Raphson Loop-----------------------------% 
-disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
+disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS']) 
 for step = 1 : nsteps 
     err3 = 1; %this is for intial tolerance.
     nit = 0;  %current iterations for this step
@@ -284,10 +284,10 @@ for step = 1 : nsteps
         forcevdisp(2,step+1) = sum(Fint(lower_nodes,:));   
         forcevdisp(3,step+1) = sum(Fint(l_nodes,:)); 
         
-        save('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
+        save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
             'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
 end
 
 disp([num2str(toc),'  END OF NEWTON RAPHSON LOOP'])
 
-% End of MaiN PrograM COde functioN
+% End of MaiN PrograM COde functioN 

@@ -7,7 +7,7 @@ L = 60; % Length of the plate
 D = 60; % Width of the plate
 numx = 80; % Number of elements in X direction
 numy = 80; % Number of elements in Y direction
-% Four corner points
+% % Four corner points
 nnx = numx+1; % Number of nodes in X-direction
 nny = numy+1; % Number of nodes in Y-direction
 pt1 = [0 0] ; pt2 = [L 0] ; pt3 = [L D] ; pt4 = [0 D] ;
@@ -25,32 +25,10 @@ elseif (strcmp(loading,'COMPRESSION') )
     kappa0 = 0.0001;
 end
 
-% ------------------For Q4 Elements-------------------%
-numnode1 = size(node,1);
+% % ------------------For Q4 Elements-------------------%
+
 numelem = size(element,1);
-uln = nnx*(nny-1)+1;       % upper left node number
-urn = nnx*nny;             % upper right node number
-lrn = nnx;                 % lower right node number
-lln = 1;                   % lower left node number
-cln = nnx*(nny-1)/2+1   ;  % node number at (0,0)
 
-topEdge  = [ uln:1:(urn-1); (uln+1):1:urn ]';
-botEdge  = [ lln:1:(lrn-1); (lln+1):1:lrn ]';
-botNodes   = unique(botEdge);
-topNodes   = unique(topEdge);
-dispNodes = botNodes; % Displacement B.C nodes
-tracNodes = topNodes; % Traction B.C. nodes
-
-% Principle Stress Based Localizing GDM
-% Small Length Scale
-% step1 = 80; step2 = 95; step3 = 120; step4 = 145; step5 = 165; step6 = 270;
-% Large Length Scale
-% step1 = 98; step2 = 125; step3 = 150; step4 = 170; step5 = 195; step6 = 270;
-
-% Conventional Localizing GDM
-% Small Length Scale
-%step1 = 30; step2 = 33; step3 = 40; step4 = 50; step5 = 75; step6 = 230;
-% Large Length Scale
 loadSteps = [5,10,15,20,25,30];
 
 check_elem = ((numx/2)+1):numx; %we are intersted in only half section.
@@ -69,15 +47,9 @@ plot(((forcevdisp(1,loadSteps(5)))/L)*1e3,(forcevdisp(2,loadSteps(5)))/(L*E*kapp
 hold on
 plot(((forcevdisp(1,loadSteps(6)))/L)*1e3,(forcevdisp(2,loadSteps(6)))/(L*E*kappa0),'*k','LineWidth',1);
 hold off
-% x0 = 200;
-% y0 = 200;
-% width=225;
-% height=150;
-% set(gcf,'units','points','position',[x0,y0,width,height])
+
 
 figure
-% figure
-% subplot(1,2,2)
 hold on 
 %--------------Plot Damage Variation----------------%
 %  Showing the guass point numbering in the element.

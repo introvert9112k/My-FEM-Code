@@ -30,7 +30,7 @@ tol1 = 1e-9;
 tol2 = 1e-10;
 tol3 = 1e-11;
 total_unknown = total_disp + total_strain; % Total unknowns
-gpnt = 0;
+gpnt = 0; % for storing the current guass point.
 interaction = zeros(4*numelem,1); %interaction at each guass point location.
 fai = zeros(total_disp,1); % Internal Force vector
 fe = zeros(total_strain,1); % Internal Force vector corresponding to non-equivalent strains
@@ -53,12 +53,12 @@ for iel = 1:numelem % Loop on elements
     strain_nonlocal = strain_tot(sctr2,:); % Non-local Equivalent strain corresponding to each node of the element
     s1 = size(u_local,1); 
     s2 = size(strain_nonlocal,1);
-    Stif1 = zeros(s1,s1);
-    Stif2 = zeros(s1,s2);
-    Stif3 = zeros(s2,s1);
-    Stif4 = zeros(s2,s2);
-    fai_gpt = zeros(s1,1);
-    fe_gpt = zeros(s2,1);  
+    Stif1 = zeros(s1,s1); % 8*8
+    Stif2 = zeros(s1,s2); % 8*12
+    Stif3 = zeros(s2,s1); % 12*8
+    Stif4 = zeros(s2,s2); % 12*12
+    fai_gpt = zeros(s1,1); % Internal force at each guass point [2 components for each point ]
+    fe_gpt = zeros(s2,1);  % 
     
     %iterating over each gauss point in element
     for kk = 1 : size(W,1) 
