@@ -14,6 +14,7 @@ numx = 80; % Number of elements in X direction
 numy = 80; % Number of elements in Y direction
 stressState='PLANE_STRAIN'; %This defines the stressState chosen
 
+
 %---------------------Material Parameters------------------%
 nu = 0.2;  % Poisson's Ratio
 E  = 1000; % Elastic Moduli,in MPa
@@ -22,8 +23,7 @@ h = 1;
 material_p =[nu, E, cc, h]; % Material Parameters
 
 % Newton-Raphson Parameters
-
-nsteps = 1; % Number of Load Increments i.e. Load is applied in "nsteps" increments
+nsteps = 10; % Number of Load Increments i.e. Load is applied in "nsteps" increments 
 tol = 0.00001; % Tolerance Value to check Newton-Raphson convergence
 maxit = 100; % Maximum Number of iterations in a single Load increment step i.e. Newton-Raphson iterations
 
@@ -153,7 +153,7 @@ total_unknown = total_disp + total_strain; % Total Unknowns
 u_tot =  zeros(total_disp,1); % Setting total unknown displacements to 0 initially
 strain_tot = zeros(total_strain,1); % Setting total nonlocal strains to 0 initially
 %numelem mean no of elements in the mesh
-kappa = zeros(4*numelem,1); % History Parameter, value of kappa at each gauss point.
+kappa = zeros(4*numelem,1); % History Parameter, value of kappa at each gauss point. 
 D_st= zeros(4*numelem,1); % Damage Variable vector,damage value at each gauss point.
 NE_gp = zeros(4*numelem,1); % % Non-equivalent strain at each gauss point
 stress_gp = zeros(4*numelem,3); %stress values at each gauss point.We have 3 stresses at each gauss point.
@@ -182,21 +182,28 @@ SIGMA_XY_smooth = [];
 EQ_STRESS = [];  %Equivalent stress at each guass point at each load step [25600x30]
 NEQ_STRESS = []; %Non local Equivalent stress at each guass point at each load step [25600x30]
 
+loadType = 'Compression'; 
 %-----------------------Newton Raphson Loop-----------------------------% 
-disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
+disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS']) 
 for step = 1 : nsteps 
     err3 = 1; %this is for intial tolerance.
     nit = 0;  %current iterations for this step
     Fint = zeros(total_unknown,1);
     fprintf(1,'\n Step %f \n',step);
     
-    %-----------For 270 Load Steps-----------%   
-    if step<=5 
-    ubar = 0.012; %displacement for the steps <= 5    
-    elseif step>5 
-    ubar = 3e-3; %displacement for the steps > 5.
-    end
-    
+    if (strcmp(loadType,'Tension'))  
+        if step <= 5 
+        ubar = 0.012; %displacement for the steps <= 5    
+        elseif step > 5 
+        ubar = 3e-3; %displacement for the steps > 5.
+        end 
+    elseif (strcmp(loadType,'Compression'))
+        if step <= 5 
+        ubar = -1*0.012; %displacement for the steps <= 5    
+        elseif step > 5 
+        ubar = -1*3e-3; %displacement for the steps > 5.
+        end
+   end 
     %Iterate until either the answer is converged or max iterations are 
     %reached.
     while ((err3>tol) && (nit<maxit))          % Newton Raphson loop
@@ -278,13 +285,15 @@ for step = 1 : nsteps
         SIGMA_XY_smooth(:,step) = stress_gp_sm(:,3);
         INTERACTION_DATA(:,step) = interaction;
         EQ_STRESS(:,step) = eq_stress;
-        NEQ_STRESS(:,step) = neq_stress;
+        NEQ_STRESS(:,step) = neq_stress; 
         
         forcevdisp(1,step+1) = mean(u_tot(upper_disp_node,:));
         forcevdisp(2,step+1) = sum(Fint(lower_nodes,:));   
         forcevdisp(3,step+1) = sum(Fint(l_nodes,:)); 
-        
-        save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
+        % 
+        % save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
+        %     'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
+         save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_%s.mat',nsteps,numx,numy,eta,beta,loadType),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
             'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
 end
 

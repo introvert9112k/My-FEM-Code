@@ -4,22 +4,22 @@ L = 60; % Length of the plate
 D = 60; % Width of the plate
 numx = 60; % Number of elements in X direction
 numy = 60; % Number of elements in Y direction
-% load('Mode_I_80by80_Beta_60_30_10_18_3_eta_5_R_dot04');
-load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9');
 
-check_step = 20;
+% load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Tension.mat');
+% load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Compression.mat');
+load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9.mat');
 
-loading = 'MODE_I';
-% loading = 'COMPRESSION';
+loading = 'Tension';
+% loading = 'Compression';
 
 %------------------Material Parameters------------------%
-if (strcmp(loading,'MODE_I') )
+if (strcmp(loading,'Tension') )
     E  = 1000; % Elastic Moduli
     kappa0 = 0.002;
-elseif (strcmp(loading,'COMPRESSION') )
+elseif (strcmp(loading,'Compression') )
     E  = 20000; % Elastic Moduli
     kappa0 = 0.0001;
-end
+end 
 
 pt1 = [0 0] ; pt2 = [L 0] ; pt3 = [L D] ; pt4 = [0 D] ;
 elemType = 'Q4' ;
@@ -70,7 +70,7 @@ end
 figure
 hold on
 plot((forcevdisp(1,:)/L)*1e3,forcevdisp(2,:)/(L*E*kappa0),'-r','LineWidth',1);
-xlabel({'Displacement'},'FontSize',12);
-ylabel({'Force'},'FontSize',12);
+xlabel({'(u/L)*1e3'},'FontSize',12);
+ylabel({'F/(L*E*K0)'},'FontSize',12);
 
 end 

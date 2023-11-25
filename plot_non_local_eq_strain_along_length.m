@@ -3,7 +3,10 @@ function plot_non_local_eq_strain_along_length
 %along the length i.e at each guass pont location along horizantal
 %direction at specified load steps..
 close all; clc;
+% load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Tension.mat');
 load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9.mat');
+%load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Compression.mat');
+
 L = 60; % Length of the plate
 D = 60; % Width of the plate
 numx = 80; % Number of elements in X direction
@@ -18,7 +21,7 @@ elemType = 'Q4' ;
 % ------------------For Q4 Elements-------------------%
 numelem = size(element,1);
 
-loadSteps = [20];
+loadSteps = [30];
 
 check_elem = ((numx/2)+1):numx; %we are intersted in only half section.
 %This gives the element numbers in the second half.
@@ -56,7 +59,7 @@ legends = cell(1,length(loadSteps));
 for i = 1 : length(loadSteps) 
     legends{i} = num2str(loadSteps(i));
 end 
-axis([0.5 1 0 finalMaxValue + 0.1]) 
+axis([0.5 1 0 finalMaxValue + 0.05]) 
 xlabel('x/L');
 ylabel('Non Local Equivalent Strain');
 title('Non Local Equivalent Strain along length at various load Steps');

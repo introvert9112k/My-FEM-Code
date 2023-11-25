@@ -8,11 +8,12 @@ L = 60; % Length of the plate
 D = 60; % Width of the plate
 numx = 80; % Number of elements in X direction
 numy = 80; % Number of elements in Y direction
-load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9');
+%load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9'); 
+load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Compression.mat');
 
 % Principle Stress Based Localizing GDM
 % step = [80 165 270]; % Small Length Scale
-step = [10,20,30];  % Large Length Scale
+step = [10];  % Large Length Scale
 
 % Conventional Localizing GDM
 % step = [30 75 230]; % Small Length Scale
