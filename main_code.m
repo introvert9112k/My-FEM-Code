@@ -1,3 +1,4 @@
+function [DAMAGE_DATA] = main_code(ubar) 
 % Using Small Large Length Scale Factor %
 % Using Normalized Anisotropic Gradient Matrix %
 
@@ -122,18 +123,18 @@ elseif ( strcmp(elemType1,'Q4') )
 end
 
 %-----------------------Plot Mesh-------------------------------% 
-% disp([num2str(toc),'  PLOTTING MESH'])
-% figure
-% hold on
-% cntr = plot([0,L,L,0,0],[0,0,D,D,0],'k-');
-% set(cntr,'LineWidth',2);
-% plot_mesh(node1,element1,elemType1,'k-');
-% set(gcf, 'color', 'white');
-% plot(node1(dispNodes,1),node1(dispNodes,2),'ks');
-% plot(node1(tracNodes,1),node1(tracNodes,2),'ks');
-% plot(node1(:,1),node1(:,2),'.');
-% axis equal
-% axis off
+disp([num2str(toc),'  PLOTTING MESH'])
+figure
+hold on
+cntr = plot([0,L,L,0,0],[0,0,D,D,0],'k-');
+set(cntr,'LineWidth',2);
+plot_mesh(node1,element1,elemType1,'k-');
+set(gcf, 'color', 'white');
+plot(node1(dispNodes,1),node1(dispNodes,2),'ks');
+plot(node1(tracNodes,1),node1(tracNodes,2),'ks');
+plot(node1(:,1),node1(:,2),'.');
+axis equal
+axis off
 
 
 %----------------Fixed DOF's for Boundary Conditions-----------------------%
@@ -190,7 +191,6 @@ disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
 % damage_error = 1;
 % damage_tolerance = 0.00001;
 % while  damage_error > damage_tolerance 
-ubar = 0.010;
 for step = 1 : nsteps 
         err3 = 1; %this is for intial tolerance.
         nit = 0;  %current iterations for this step
@@ -211,7 +211,7 @@ for step = 1 : nsteps
        %      ubar = -1*3e-3; %displacement for the steps > 5.
        %      end
        % end 
-    
+       % 
     
         %Iterate until either the answer is converged or max iterations are 
         %reached.
@@ -309,3 +309,5 @@ for step = 1 : nsteps
 disp([num2str(toc),'  END OF NEWTON RAPHSON LOOP'])
 
 % End of MaiN PrograM COde functioN 
+
+end
