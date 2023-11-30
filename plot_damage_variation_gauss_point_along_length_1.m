@@ -80,7 +80,7 @@ end
 axis([0.5 1 0 1]) 
 xlabel('x/L');
 ylabel('Damage');
-title('Damage along length at various load Steps');
+% title('Damage along length at various load Steps');
 legend(legends,'Location','best');
 hold off
 end 

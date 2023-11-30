@@ -21,7 +21,7 @@ elemType = 'Q4' ;
 % ------------------For Q4 Elements-------------------%
 numelem = size(element,1);
 
-loadSteps = [30];
+loadSteps = [5,10,15,20,25,30];
 
 check_elem = ((numx/2)+1):numx; %we are intersted in only half section.
 %This gives the element numbers in the second half.
@@ -62,7 +62,7 @@ end
 axis([0.5 1 0 finalMaxValue + 0.05]) 
 xlabel('x/L');
 ylabel('Non Local Equivalent Strain');
-title('Non Local Equivalent Strain along length at various load Steps');
+% title('Non Local Equivalent Strain along length at various load Steps');
 legend(legends,'Location','best');
 hold off
 end 

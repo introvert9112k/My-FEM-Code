@@ -5,10 +5,9 @@ D = 60; % Width of the plate
 numx = 60; % Number of elements in X direction
 numy = 60; % Number of elements in Y direction
 
-% load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Tension.mat');
 % load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Compression.mat');
 load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9.mat');
-
+%load('Mode_I_steps_1_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Tension.mat');
 loading = 'Tension';
 % loading = 'Compression';
 
@@ -69,7 +68,8 @@ end
 %---------------------Load Displacement Plot---------------------%
 figure
 hold on
-plot((forcevdisp(1,:)/L)*1e3,forcevdisp(2,:)/(L*E*kappa0),'-r','LineWidth',1);
+%plot((forcevdisp(1,:)/L)*1e3,forcevdisp(2,:)/(L*E*kappa0),'-r','LineWidth',1);
+plot( forcevdisp(1,:),forcevdisp(2,:),'*r','LineWidth',1);
 xlabel({'(u/L)*1e3'},'FontSize',12);
 ylabel({'F/(L*E*K0)'},'FontSize',12);
 

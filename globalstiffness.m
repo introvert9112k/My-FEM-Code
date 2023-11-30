@@ -1,6 +1,6 @@
 % global stiffness
 function [Stif,fai,fe,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress] = globalstiffness(u_tot,strain_tot,D_st,material_p, ...
-    De,damage_p,numelem,total_disp,total_strain,node1,element1,element2,node2,elemType1,elemType2,kappa0,kappa,NE_gp,stress_gp)
+    De,damage_p,numelem,total_disp,total_strain,node1,element1,element2,node2,elemType1,elemType2,kappa0,kappa,NE_gp,stress_gp) 
 
 %-----------------Damage Parameters---------------------%
 k = damage_p(1,1); 
@@ -13,15 +13,15 @@ stress_gp_sm = zeros(4*numelem,3); %3 state of smoothed stress at gauss point
 eq_stress = zeros(4*numelem,1); %equivalent stress at each gauss point
 neq_stress = zeros(4*numelem,1); %non local equivalent stress at each gauss point.
 
-%-----------------Material Parameters-------------------%
-nu = material_p(1,1); % Poisson Ratio
+%-----------------Material Parameters-------------------% 
+nu = material_p(1,1); % Poisson Ratio 
 E = material_p(1,2);
 len_par = material_p(1,3); % Length Scale Parameter
 th = material_p(1,4); % Thickness of the Specimen
 
 del = [1; 1; 0];
 
-H = [2 -1 0; 
+H = [2 -1 0; % ####
     -1 2 0; 
      0 0 1.5];
  
@@ -33,11 +33,12 @@ total_unknown = total_disp + total_strain; % Total unknowns
 gpnt = 0; % for storing the current guass point.
 interaction = zeros(4*numelem,1); %interaction at each guass point location.
 fai = zeros(total_disp,1); % Internal Force vector
-fe = zeros(total_strain,1); % Internal Force vector corresponding to non-equivalent strains
-I = zeros(400*numelem,1);
-J =  zeros(400*numelem,1);
-S = zeros(400*numelem,1);
-index = 0;
+fe = zeros(total_strain,1); % Internal Force vector corresponding to non-equivalent strains           ###
+I = zeros(400*numelem,1); %  ###
+J =  zeros(400*numelem,1); % ####
+S = zeros(400*numelem,1); %  ###
+
+index = 0; % ####
 
 for iel = 1:numelem % Loop on elements  
     sctr = element2(iel,:); % location of the nodes of the current element in node1

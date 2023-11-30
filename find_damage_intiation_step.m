@@ -1,6 +1,6 @@
 function find_damage_intiation_step
 
-ubar = 0.0107;
+ubar = 0.01068;
 damage_error = 1;
 damage_tolerance = 0.00001;
 ubar_vs_damage = [];

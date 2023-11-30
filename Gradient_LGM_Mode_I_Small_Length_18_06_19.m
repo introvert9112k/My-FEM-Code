@@ -23,7 +23,6 @@ h = 1;
 material_p =[nu, E, cc, h]; % Material Parameters
 
 % Newton-Raphson Parameters
-nsteps = 1; % Number of Load Increments i.e. Load is applied in "nsteps" increments 
 tol = 0.00001; % Tolerance Value to check Newton-Raphson convergence
 maxit = 100; % Maximum Number of iterations in a single Load increment step i.e. Newton-Raphson iterations
 
@@ -170,7 +169,7 @@ kappa0(:,1) = ft/E; % Tensile Strength/Elastic Modulus 'ft/E'
 DAMAGE_DATA = []; %damage value at each guass point [25600] at each load step 30. size = [25600x30]  
 NESTRAIN_DATA = []; %non local equivalent strain data at each guass point [25600] at each load step 30. size = [25600x30] 
 DISP_DATA = []; %displacement at each node [81x81],each node has 2 displacements i.e 81x81x2 at each load step. size = [13122x30]
-NESTRAIN_DATA_NODES = []; %Strain at nodes [81x81],each node has 3 strains i.e 81x81x2 at each load step. size = [19683x30]
+NESTRAIN_DATA_NODES = []; %Strain at nodes [81x81],each node has 3 strains i.e 81x81x3 at each load step. size = [19683x30]
 INTERNAL_FORCE = []; %internal force data
 INTERACTION_DATA = [];
 SIGMA_XX = []; %sigma_xx stress at each guass point [25600] at each load step [25600x30]
@@ -184,13 +183,14 @@ NEQ_STRESS = []; %Non local Equivalent stress at each guass point at each load s
 
 loadType = 'Tension'; 
 %-----------------------Newton Raphson Loop-----------------------------% 
-disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS']) 
+disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])   
 
 % ubar = 0.012;
 % damage_error = 1;
 % damage_tolerance = 0.00001;
 % while  damage_error > damage_tolerance 
-ubar = 0.010;
+temp_ubar = 0;
+nsteps = 6; % Number of Load Increments i.e. Load is applied in "nsteps" increments 
 for step = 1 : nsteps 
         err3 = 1; %this is for intial tolerance.
         nit = 0;  %current iterations for this step
@@ -198,20 +198,23 @@ for step = 1 : nsteps
         fprintf(1,'\n Step %f \n',step);
         
     
-       %  if (strcmp(loadType,'Tension'))  
-       %      if step <= 5 
-       %      ubar = 0.012; %displacement for the steps <= 5    
-       %      elseif step > 5 
-       %      ubar = 3e-3; %displacement for the steps > 5.
-       %      end 
-       %  elseif (strcmp(loadType,'Compression'))
-       %      if step <= 5 
-       %      ubar = -1*0.012; %displacement for the steps <= 5    
-       %      elseif step > 5 
-       %      ubar = -1*3e-3; %displacement for the steps > 5.
-       %      end
-       % end 
-    
+        if (strcmp(loadType,'Tension'))  
+            if step <= 3  
+            ubar = 0.012; %displacement for the steps <= 5   
+            temp_ubar = temp_ubar + ubar;
+            else 
+            temp_ubar = temp_ubar - 0.012;
+            ubar = temp_ubar; %displacement for the steps > 5.
+            end 
+            disp([num2str(step)," ",num2str(temp_ubar)]);
+        % elseif (strcmp(loadType,'Compression'))
+        %     if step <= 5 
+        %     ubar = -1*0.012; %displacement for the steps <= 5    
+        %     elseif step > 5 
+        %     ubar = -1*3e-3; %displacement for the steps > 5.
+        %     end
+       end 
+
     
         %Iterate until either the answer is converged or max iterations are 
         %reached.

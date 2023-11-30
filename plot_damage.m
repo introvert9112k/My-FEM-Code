@@ -10,7 +10,7 @@ numy = 60; % Number of elements in Y direction
 % load('Mode_I_80by80_Beta_60_30_10_18_3_eta_5_R_dot04');
 load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9');
 
-check_step = 1;
+check_step = 30;
 
 loading = 'MODE_I';
 % loading = 'COMPRESSION';
@@ -89,7 +89,7 @@ shading interp
 set(gcf, 'color', 'white');
 axis equal
 axis off
-title("Damage")
+% title("Damage")
 
 end 
 
