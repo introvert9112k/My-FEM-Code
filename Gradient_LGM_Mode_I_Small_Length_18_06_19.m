@@ -136,8 +136,8 @@ end
 
 
 %----------------Fixed DOF's for Boundary Conditions-----------------------%
-udofs = 2*tracNodes(1,1) - 1;
-vdofs = dispNodes1.*2;
+udofs = 2*tracNodes(1,1) - 1; %displacement along u-direction is not allowed for the first upper_node
+vdofs = dispNodes1.*2; %displacement along the v-direction is not allowed for the lower_nodes
 
 upper_disp_node = tracNodes.*2; %This gives the location of the vertical displacement for the topEdge Nodes in u_tot 
 lower_nodes = (dispNodes)*2; %This gives the location of the vertical displacement for the bottomEdge Nodes in u_tot 
@@ -156,9 +156,7 @@ kappa = zeros(4*numelem,1); % History Parameter, value of kappa at each gauss po
 D_st= zeros(4*numelem,1); % Damage Variable vector,damage value at each gauss point.
 NE_gp = zeros(4*numelem,1); % % Non-equivalent strain at each gauss point
 stress_gp = zeros(4*numelem,3); %stress values at each gauss point.We have 3 stresses at each gauss point.
-forcevdisp = zeros(2,nsteps+1);
-forcevdisp(1,1) = 0;
-forcevdisp(2,1) = 0;
+
 
 [Gpnt] = computing_gauss_location(numelem,elemType2,node2,element2); % Gauss Point Location Generation
 
@@ -179,41 +177,53 @@ SIGMA_XX_smooth = [];
 SIGMA_YY_smooth = [];
 SIGMA_XY_smooth = [];
 EQ_STRESS = [];  %Equivalent stress at each guass point at each load step [25600x30]
-NEQ_STRESS = []; %Non local Equivalent stress at each guass point at each load step [25600x30]
+NEQ_STRESS = []; %Non local Equivalent stress at each guass point at each load step [25600x30] 
+STRAIN_LOCAL_XX = [];     %strain_xx stress at each guass point [25600] at each load step 
+STRAIN_LOCAL_YY = [];     %strain_yy stress at each guass point [25600] at each load step 
+STRAIN_LOCAL_XY  = [];    %strain_xy stress at each guass point [25600] at each load step 
+STRAIN_NON_LOCAL_XX = []; %micormorphic or non local strain_xx at each guass point [25600] at each load step 
+STRAIN_NON_LOCAL_YY = []; %micormorphic or non local strain_yy  stress at each guass point [25600] at each load step 
+STRAIN_NON_LOCAL_XY = []; %micormorphic or non local strain_xy  at each guass point [25600] at each load step .
 
-loadType = 'Tension'; 
 %-----------------------Newton Raphson Loop-----------------------------% 
 disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])   
 
-% ubar = 0.012;
-% damage_error = 1;
-% damage_tolerance = 0.00001;
-% while  damage_error > damage_tolerance 
+
 temp_ubar = 0;
-nsteps = 6; % Number of Load Increments i.e. Load is applied in "nsteps" increments 
+ % Number of Load Increments i.e. Load is applied in "nsteps" increments 
+loadingType = 'tension';
+nsteps = 20;
+forcevdisp = zeros(2,nsteps+1);
+forcevdisp(1,1) = 0;
+forcevdisp(2,1) = 0;
 for step = 1 : nsteps 
         err3 = 1; %this is for intial tolerance.
         nit = 0;  %current iterations for this step
         Fint = zeros(total_unknown,1);
         fprintf(1,'\n Step %f \n',step);
         
-    
-        if (strcmp(loadType,'Tension'))  
-            if step <= 3  
-            ubar = 0.012; %displacement for the steps <= 5   
-            temp_ubar = temp_ubar + ubar;
-            else 
-            temp_ubar = temp_ubar - 0.012;
-            ubar = temp_ubar; %displacement for the steps > 5.
-            end 
-            disp([num2str(step)," ",num2str(temp_ubar)]);
-        % elseif (strcmp(loadType,'Compression'))
+        if step <= 5  
+               ubar = 0.0015; 
+        elseif step > 5 && step <= 10 
+               loadingType = 'compression';
+               ubar = -0.0015; 
+        elseif step > 10 && step <= 15 
+               ubar = 0.0015;
+        else 
+              ubar = -0.0015;
+        % elseif step > 10
+        %         ubar = 0.002; 
+        
+        end 
+        temp_ubar = temp_ubar + ubar;
+        disp([num2str(step)," ",num2str(temp_ubar)]);
+
+        % -------------Original Montonic Loading-----------------
         %     if step <= 5 
-        %     ubar = -1*0.012; %displacement for the steps <= 5    
+        %           ubar = 0.012; %displacement for the steps <= 5    
         %     elseif step > 5 
-        %     ubar = -1*3e-3; %displacement for the steps > 5.
+        %           ubar = 3e-3; %displacement for the steps > 5.
         %     end
-       end 
 
     
         %Iterate until either the answer is converged or max iterations are 
@@ -223,7 +233,7 @@ for step = 1 : nsteps
             nit = nit + 1; %incrementing the iterations
             
             % Computing Stiffness Matrix and Internal Force Vector
-            [K,FAI,FE,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress] = globalstiffness(u_tot,strain_tot,D_st,material_p,De,damage_p,numelem,total_disp,...
+            [K,FAI,FE,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress,strain_gp_local,strain_gp_non_local] = globalstiffness(u_tot,strain_tot,D_st,material_p,De,damage_p,numelem,total_disp,...
                 total_strain,node1,element1,element2,node2,elemType1,elemType2,kappa0,kappa,NE_gp,stress_gp);                     
                  
             Fint = [FAI;FE]; %internal forces vector
@@ -236,15 +246,15 @@ for step = 1 : nsteps
             
             Kres = K;
             bcwt = 1; % Used to keep the conditioning of the K matrix
-            Kres(udofs,:) = 0;   % zero out the rows and columns of the K matrix
-            Kres(:,udofs) = 0;
-            Kres(vdofs,:) = 0;
+            Kres(udofs,:) = 0;   % zero out the rows and columns of the K matrix, how ??
+            Kres(:,udofs) = 0;   % zero out the corresponding columns
+            Kres(vdofs,:) = 0;   % making the rows and columns correspond to the nodes in lower boundary where displacement along Y-direction is not allowed
             Kres(:,vdofs) = 0;
-            Kres(udofs,udofs) = bcwt*speye(length(udofs)); % put ones*bcwt on the diagonal
-            Kres(vdofs,vdofs) = bcwt*speye(length(vdofs));        
-            Kres(upper_disp_node,:) = 0;
+            Kres(udofs,udofs) = bcwt*speye(length(udofs));  % For inverse property
+            Kres(vdofs,vdofs) = bcwt*speye(length(vdofs));  %       
+            Kres(upper_disp_node,:) = 0; %
             Kres(:,upper_disp_node) = 0;
-            Kres(upper_disp_node,upper_disp_node) = bcwt*speye(length(upper_disp_node));
+            Kres(upper_disp_node,upper_disp_node) = bcwt*speye(length(upper_disp_node)); % why ??
             
             if nit == 1 
                 for kk = 1:total_unknown               
@@ -255,17 +265,17 @@ for step = 1 : nsteps
                 end
             end
             
-            R(udofs) = 0 ; % Imposing B.C. on Residual
-            R(vdofs) = 0 ; % Imposing B.C. on Residual
+            R(udofs) = 0 ; % Imposing B.C. on Residual, As there is no displacement corresponding forces should also be zero.
+            R(vdofs) = 0 ; % Imposing B.C. on Residual 
             
             if nit == 1
                 R(upper_disp_node) = ubar;
             else
                 R(upper_disp_node) = 0;
-            end
+            end 
             
             %------Solve for the correction---------%
-            [du]= Kres\R;
+            [du]= Kres\R; % Kres = 32805 x 32805 and R = 32805 x1 and du = 32805 x 1
             du1 = du(1:total_disp,1); % Displacement increment vector
             du2 = du((total_disp+1):total_unknown,1); % Non-Equivalent Strain increment vector
             u_tot = u_tot + du1; % Updating displacement vector
@@ -298,15 +308,22 @@ for step = 1 : nsteps
             INTERACTION_DATA(:,step) = interaction;
             EQ_STRESS(:,step) = eq_stress;
             NEQ_STRESS(:,step) = neq_stress; 
-            
+            STRAIN_LOCAL_XX(:,step) = strain_gp_local(:,1);  
+            STRAIN_LOCAL_YY(:,step) = strain_gp_local(:,2);    
+            STRAIN_LOCAL_XY(:,step)  = strain_gp_local(:,3);    
+            STRAIN_NON_LOCAL_XX(:,step) = strain_gp_non_local(:,1); 
+            STRAIN_NON_LOCAL_YY(:,step) = strain_gp_non_local(:,2);  
+            STRAIN_NON_LOCAL_XY(:,step) = strain_gp_non_local(:,3); 
+
             forcevdisp(1,step+1) = mean(u_tot(upper_disp_node,:));
             forcevdisp(2,step+1) = sum(Fint(lower_nodes,:));   
             forcevdisp(3,step+1) = sum(Fint(l_nodes,:)); 
             % 
             % save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
             %     'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
-             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_%s.mat',nsteps,numx,numy,eta,beta,loadType),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
-                'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
+             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
+                'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS','node1','element1','STRAIN_LOCAL_XX', ...
+                'STRAIN_LOCAL_YY','STRAIN_LOCAL_XY','STRAIN_NON_LOCAL_XX','STRAIN_NON_LOCAL_YY','STRAIN_NON_LOCAL_XY');
     end
 % end 
 disp([num2str(toc),'  END OF NEWTON RAPHSON LOOP'])

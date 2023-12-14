@@ -19,4 +19,4 @@ function U = element_disp(e,u,node1,element1)
 
     U = stdU;
 
-end % END OF FUNCTION element_disp
+end % END OF FUNCTION element_disp 

@@ -24,4 +24,4 @@ for k = 1 : nn
     sctr_nonlocal(cnt) = sctr_n(k);
 end
 sctrB = sctr_nonlocal;
-end
+end 
