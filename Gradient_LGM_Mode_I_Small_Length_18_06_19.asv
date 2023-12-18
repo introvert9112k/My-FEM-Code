@@ -233,7 +233,7 @@ for step = 1 : nsteps
             nit = nit + 1; %incrementing the iterations
             
             % Computing Stiffness Matrix and Internal Force Vector
-            [K,FAI,FE,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress,strain_gp_local,strain_gp_nonlocal] = globalstiffness(u_tot,strain_tot,D_st,material_p,De,damage_p,numelem,total_disp,...
+            [K,FAI,FE,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress,strain_gp_local,strain_gp_non_local] = globalstiffness(u_tot,strain_tot,D_st,material_p,De,damage_p,numelem,total_disp,...
                 total_strain,node1,element1,element2,node2,elemType1,elemType2,kappa0,kappa,NE_gp,stress_gp);                     
                  
             Fint = [FAI;FE]; %internal forces vector
@@ -246,16 +246,21 @@ for step = 1 : nsteps
             
             Kres = K;
             bcwt = 1; % Used to keep the conditioning of the K matrix
-            Kres(udofs,:) = 0;   % zero out the rows and columns of the K matrix, how ??
-            Kres(:,udofs) = 0;   % zero out the corresponding columns
+            Kres(udofs,:) = 0;   % zero out the rows and columns of the K matrix, [As there is no displacement residual force is 0 ]
+            Kres(:,udofs) = 0;   % zero out the corresponding columns             [ No displacement ]
             Kres(vdofs,:) = 0;   % making the rows and columns correspond to the nodes in lower boundary where displacement along Y-direction is not allowed
-            Kres(:,vdofs) = 0;
+            Kres(:,vdofs) = 0;   
             Kres(udofs,udofs) = bcwt*speye(length(udofs));  % For inverse property
-            Kres(vdofs,vdofs) = bcwt*speye(length(vdofs));  %       
-            Kres(upper_disp_node,:) = 0; %
-            Kres(:,upper_disp_node) = 0;
-            Kres(upper_disp_node,upper_disp_node) = bcwt*speye(length(upper_disp_node)); % why ??
+            Kres(vdofs,vdofs) = bcwt*speye(length(vdofs));  %   
+
             
+            Kres(upper_disp_node,:) = 0; %There is no resdiual force for the vertical displacement of upper nodes, so corresponding columns are zero.
+            Kres(:,upper_disp_node) = 0; % ??
+            Kres(upper_disp_node,upper_disp_node) = bcwt*speye(length(upper_disp_node)); % For inverse property
+            
+            %In increment step,the displacement is applied to the upper_nodes so they get displaced by ubar. The equivalent extrenal force for this displacement is K(kk,zz)*ubar, which
+            %should be equal to internal force, because we are sure the nodes are displaced by ubar and they experince internal force equivalent to external force for this displacement. 
+            % So for the first iteration of increment change the residual.
             if nit == 1 
                 for kk = 1:total_unknown               
                     for ll = 1:length(upper_disp_node)
@@ -269,13 +274,13 @@ for step = 1 : nsteps
             R(vdofs) = 0 ; % Imposing B.C. on Residual 
             
             if nit == 1
-                R(upper_disp_node) = ubar;
+                R(upper_disp_node) = ubar;  % How ??
             else
                 R(upper_disp_node) = 0;
             end 
             
             %------Solve for the correction---------%
-            [du]= Kres\R; % Kres = 32805 x 32805 and R = 32805 x1 and du = 32805 x 1
+            [du]= Kres\R; % Kres = 32805 x 32805 and R = 32805 x1 and du = 32805 x 1 [ Matrix right division ]
             du1 = du(1:total_disp,1); % Displacement increment vector
             du2 = du((total_disp+1):total_unknown,1); % Non-Equivalent Strain increment vector
             u_tot = u_tot + du1; % Updating displacement vector
@@ -322,7 +327,8 @@ for step = 1 : nsteps
             % save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
             %     'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
              save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
-                'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS','node1','element1','');
+                'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS','node1','element1','STRAIN_LOCAL_XX', ...
+                'STRAIN_LOCAL_YY','STRAIN_LOCAL_XY','STRAIN_NON_LOCAL_XX','STRAIN_NON_LOCAL_YY','STRAIN_NON_LOCAL_XY');
     end
 % end 
 disp([num2str(toc),'  END OF NEWTON RAPHSON LOOP'])
