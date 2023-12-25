@@ -1,6 +1,6 @@
 % global stiffness
-function [Stif,fai,fe,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress,strain_gp_local,strain_gp_non_local] = globalstiffness(u_tot,strain_tot,D_st,material_p, ...
-    De,damage_p,numelem,total_disp,total_strain,node1,element1,element2,node2,elemType1,elemType2,kappa0,kappa,NE_gp,stress_gp) 
+function [Stif,fai,fe,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress,strain_gp_local,strain_gp_non_local,eq_strain] = globalstiffness(u_tot,strain_tot,D_st,material_p, ...
+    De,damage_p,numelem,total_disp,total_strain,node1,element1,element2,node2,elemType1,elemType2,kappa0,kappa,NE_gp,stress_gp,ubar) 
 
 %-----------------Damage Parameters---------------------%
 k = damage_p(1,1); 
@@ -14,6 +14,7 @@ eq_stress = zeros(4*numelem,1); %equivalent stress at each gauss point
 neq_stress = zeros(4*numelem,1); %non local equivalent stress at each gauss point.
 strain_gp_local = zeros(4*numelem,3); %strain at each gauss point
 strain_gp_non_local = zeros(4*numelem,3); %micromorphic strain at each gauss point.
+eq_strain = zeros(4*numelem,1); %equivalent strain at each guass point.
 
 %-----------------Material Parameters-------------------% 
 nu = material_p(1,1); % Poisson Ratio 
@@ -302,11 +303,17 @@ for iel = 1:numelem % Loop on elements
 
         Stif4 = Stif4 + (Coff6)*W(kk)*det(J01)*th; % kee (12x12)
         
-        fai_gpt = fai_gpt - (B1'*stress_gpt)*W(kk)*det(J01)*th; % B'.stress = Force. B1 = 3x8 and B1' = 8x3 stress_gpt = 3x1 fai_gpt = 8x1 size 
-        
-        fe_gpt = fe_gpt - (N2'*conjugate_stress_gpt + B2'*xit_gpt)*W(kk)*det(J01)*th; % N2 = 3x12, N2' = 12x3 and coupling stress = 3x1 = 12x1 + B2 = 6x12 B2' = 12x6 xi_gpt = 6x1 total = 12x1 So fe_gpt = 12x1
-        
+        if ubar > 0 
+            fai_gpt = fai_gpt - (B1'*stress_gpt)*W(kk)*det(J01)*th; % B'.stress = Force. B1 = 3x8 and B1' = 8x3 stress_gpt = 3x1 fai_gpt = 8x1 size 
+            
+            fe_gpt = fe_gpt - (N2'*conjugate_stress_gpt + B2'*xit_gpt)*W(kk)*det(J01)*th; % N2 = 3x12, N2' = 12x3 and coupling stress = 3x1 = 12x1 + B2 = 6x12 B2' = 12x6 xi_gpt = 6x1 total = 12x1 So fe_gpt = 12x1
+        else 
+            fai_gpt = fai_gpt + (B1'*stress_gpt)*W(kk)*det(J01)*th;
+            fe_gpt = fe_gpt - (N2'*conjugate_stress_gpt + B2'*xit_gpt)*W(kk)*det(J01)*th;
+        end 
+
         NE_gp(gpnt,1) = eps_nl; % Micromorphic equivalent strain.
+        eq_strain(gpnt,1) = eps_l; %equivalent strain.
         kappa(gpnt,1) = kappa_gpt; %
         D_st(gpnt,1) = Omega; %Damage at each gauss point
         stress_gp(gpnt,:) = stress_gpt'; %Modified stress at each guass point [ 25600 x 3]..
@@ -340,4 +347,4 @@ end                      % end of looping on elements
 
 Stif = sparse(I,J,S,total_unknown,total_unknown);
 
-end
+end 

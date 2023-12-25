@@ -184,6 +184,7 @@ STRAIN_LOCAL_XY  = [];    %strain_xy stress at each guass point [25600] at each 
 STRAIN_NON_LOCAL_XX = []; %micormorphic or non local strain_xx at each guass point [25600] at each load step 
 STRAIN_NON_LOCAL_YY = []; %micormorphic or non local strain_yy  stress at each guass point [25600] at each load step 
 STRAIN_NON_LOCAL_XY = []; %micormorphic or non local strain_xy  at each guass point [25600] at each load step .
+EQ_STRAIN = []; %Equivalent strain from local strain tensor.
 
 %-----------------------Newton Raphson Loop-----------------------------% 
 disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])   
@@ -192,7 +193,7 @@ disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
 temp_ubar = 0;
  % Number of Load Increments i.e. Load is applied in "nsteps" increments 
 loadingType = 'tension';
-nsteps = 20;
+nsteps = 10;
 forcevdisp = zeros(2,nsteps+1);
 forcevdisp(1,1) = 0;
 forcevdisp(2,1) = 0;
@@ -203,14 +204,18 @@ for step = 1 : nsteps
         fprintf(1,'\n Step %f \n',step);
         
         if step <= 5  
-               ubar = 0.0015; 
+               %ubar = 0.0015; 
+               ubar = 0.012;
         elseif step > 5 && step <= 10 
                loadingType = 'compression';
-               ubar = -0.0015; 
+               %ubar = -0.0015; 
+               ubar = -0.012;
         elseif step > 10 && step <= 15 
-               ubar = 0.0015;
+               %ubar = 0.0015;
+               ubar = 0.012;
         else 
-              ubar = -0.0015;
+              %ubar = -0.0015;
+              ubar = -0.012;
         % elseif step > 10
         %         ubar = 0.002; 
         
@@ -233,7 +238,7 @@ for step = 1 : nsteps
             nit = nit + 1; %incrementing the iterations
             
             % Computing Stiffness Matrix and Internal Force Vector
-            [K,FAI,FE,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress,strain_gp_local,strain_gp_non_local] = globalstiffness(u_tot,strain_tot,D_st,material_p,De,damage_p,numelem,total_disp,...
+            [K,FAI,FE,D_st,kappa,NE_gp,stress_gp,interaction,stress_gp_sm,eq_stress,neq_stress,strain_gp_local,strain_gp_non_local,eq_strain] = globalstiffness(u_tot,strain_tot,D_st,material_p,De,damage_p,numelem,total_disp,...
                 total_strain,node1,element1,element2,node2,elemType1,elemType2,kappa0,kappa,NE_gp,stress_gp);                     
                  
             Fint = [FAI;FE]; %internal forces vector
@@ -314,16 +319,16 @@ for step = 1 : nsteps
             STRAIN_NON_LOCAL_XX(:,step) = strain_gp_non_local(:,1); 
             STRAIN_NON_LOCAL_YY(:,step) = strain_gp_non_local(:,2);  
             STRAIN_NON_LOCAL_XY(:,step) = strain_gp_non_local(:,3); 
-
+            EQ_STRAIN(:,step) = eq_strain;
             forcevdisp(1,step+1) = mean(u_tot(upper_disp_node,:));
             forcevdisp(2,step+1) = sum(Fint(lower_nodes,:));   
             forcevdisp(3,step+1) = sum(Fint(l_nodes,:)); 
             % 
             % save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
             %     'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
-             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
+             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle_0.012.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
                 'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS','node1','element1','STRAIN_LOCAL_XX', ...
-                'STRAIN_LOCAL_YY','STRAIN_LOCAL_XY','STRAIN_NON_LOCAL_XX','STRAIN_NON_LOCAL_YY','STRAIN_NON_LOCAL_XY');
+                'STRAIN_LOCAL_YY','STRAIN_LOCAL_XY','STRAIN_NON_LOCAL_XX','STRAIN_NON_LOCAL_YY','STRAIN_NON_LOCAL_XY','EQ_STRAIN');
     end
 % end 
 disp([num2str(toc),'  END OF NEWTON RAPHSON LOOP'])
