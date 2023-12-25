@@ -274,7 +274,7 @@ for step = 1 : nsteps
             R(vdofs) = 0 ; % Imposing B.C. on Residual 
             
             if nit == 1
-                R(upper_disp_node) = ubar;  % How ??
+                R(upper_disp_node) = ubar;  % 
             else
                 R(upper_disp_node) = 0;
             end 
@@ -326,7 +326,7 @@ for step = 1 : nsteps
             % 
             % save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
             %     'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
-             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
+             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle_temp.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
                 'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS','node1','element1','STRAIN_LOCAL_XX', ...
                 'STRAIN_LOCAL_YY','STRAIN_LOCAL_XY','STRAIN_NON_LOCAL_XX','STRAIN_NON_LOCAL_YY','STRAIN_NON_LOCAL_XY');
     end
