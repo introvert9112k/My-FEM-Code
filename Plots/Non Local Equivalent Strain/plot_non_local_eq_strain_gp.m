@@ -34,11 +34,14 @@ function plot_non_local_eq_strain_gp
 
 %--------------------- For multiple load steps-----------------------
 %--------------------- Micro-morphic-equivalent-strain-plot--------------------------%
+figure;
 %load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Tension_cycle.mat');
-load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
+%load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
+load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.012.mat');
 % subplot dimension
 
-steps = [1,2,3,4,5; 6,7,8,9,10; 11,12,13,14,15; 16,17,18,19,20];
+%steps = [1,2,3,4,5; 6,7,8,9,10; 11,12,13,14,15; 16,17,18,19,20];
+steps = [1,2,3,4,5; 6,7,8,9,10];
 n1 = size(steps,1); % number of rows
 n2 = size(steps,2); % number of columns
 
@@ -64,5 +67,6 @@ for k1 = 1:n1
             title(sprintf("load Step %d"), (k1-1)*n2 + k2);
             colorbar;
     end
- end
-end 
+end
+ sgtitle('Non local Equivalent Strain');
+end  

@@ -9,11 +9,10 @@ D = 60; % Width of the plate
 numx = 80; % Number of elements in X direction
 numy = 80; % Number of elements in Y direction
 %load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9'); 
-load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9.mat'); 
+
 
 % Principle Stress Based Localizing GDM
 % step = [80 165 270]; % Small Length Scale
-step = [10,15,30];  % Large Length Scale
 
 % Conventional Localizing GDM
 % step = [30 75 230]; % Small Length Scale
@@ -85,21 +84,17 @@ end
 %--------------------- Damage Plot-------------------------%
 figure
 
+steps = [1,2,3,4,5]; 
 % subplot dimension
-n1 = 1; % number of rows
-n2 = 3; % number of columns
+n1 = size(steps,1); % number of rows
+n2 = size(steps,2); % number of columns
 
-% These values would define the space between the graphs
-% if equal to 1 there will be no space between graphs
-nw = 0.95; % normalized width
-nh = 0.95; % normalized height
+load('Mode_I_80by80_Eta_4_R04_SmallLenScale_Beta9.mat'); 
 
 for k1 = 1:n1
     for k2 = 1:n2
-            check_step = step(k2);
-            subplot(n1,n2,(k1-1)*n2 + k2,...
-            'position', [(1-nw)/n2/2 + (k2-1)/n2, (1-nh)/n1/2 + 1-k1/n1,...
-            nw/n2 nh/n1]);
+            check_step = steps(k1,k2);
+            subplot(n1,n2,(k1-1)*n2 + k2);
             tri = delaunay(GPT_DATA(:,1),GPT_DATA(:,2));
             patch('Vertices',GPT_DATA,'Faces',tri,'FaceVertexCData',NESTRAIN_DATA(:,check_step));
             hold on
@@ -110,9 +105,11 @@ for k1 = 1:n1
             set(gcf, 'color', 'white');
             axis equal
             axis off
+            colorbar;
+            title('load step %d',check_step);
     end
 end
-
+sgtitle('Non Local Equivalnet Strain');
 end
 
 % End of the function
