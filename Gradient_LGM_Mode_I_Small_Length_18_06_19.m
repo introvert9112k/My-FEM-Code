@@ -251,16 +251,21 @@ for step = 1 : nsteps
             
             Kres = K;
             bcwt = 1; % Used to keep the conditioning of the K matrix
-            Kres(udofs,:) = 0;   % zero out the rows and columns of the K matrix, how ??
-            Kres(:,udofs) = 0;   % zero out the corresponding columns
+            Kres(udofs,:) = 0;   % zero out the rows and columns of the K matrix, [As there is no displacement residual force is 0 ]
+            Kres(:,udofs) = 0;   % zero out the corresponding columns             [ No displacement ]
             Kres(vdofs,:) = 0;   % making the rows and columns correspond to the nodes in lower boundary where displacement along Y-direction is not allowed
-            Kres(:,vdofs) = 0;
+            Kres(:,vdofs) = 0;   
             Kres(udofs,udofs) = bcwt*speye(length(udofs));  % For inverse property
-            Kres(vdofs,vdofs) = bcwt*speye(length(vdofs));  %       
-            Kres(upper_disp_node,:) = 0; %
-            Kres(:,upper_disp_node) = 0;
-            Kres(upper_disp_node,upper_disp_node) = bcwt*speye(length(upper_disp_node)); % why ??
+            Kres(vdofs,vdofs) = bcwt*speye(length(vdofs));  %   
+
             
+            Kres(upper_disp_node,:) = 0; %There is no resdiual force for the vertical displacement of upper nodes, so corresponding columns are zero.
+            Kres(:,upper_disp_node) = 0; % ??
+            Kres(upper_disp_node,upper_disp_node) = bcwt*speye(length(upper_disp_node)); % For inverse property
+            
+            %In increment step,the displacement is applied to the upper_nodes so they get displaced by ubar. The equivalent extrenal force for this displacement is K(kk,zz)*ubar, which
+            %should be equal to internal force, because we are sure the nodes are displaced by ubar and they experince internal force equivalent to external force for this displacement. 
+            % So for the first iteration of increment change the residual.
             if nit == 1 
                 for kk = 1:total_unknown               
                     for ll = 1:length(upper_disp_node)
@@ -274,13 +279,13 @@ for step = 1 : nsteps
             R(vdofs) = 0 ; % Imposing B.C. on Residual 
             
             if nit == 1
-                R(upper_disp_node) = ubar;
+                R(upper_disp_node) = ubar;  % How ??
             else
                 R(upper_disp_node) = 0;
             end 
             
             %------Solve for the correction---------%
-            [du]= Kres\R; % Kres = 32805 x 32805 and R = 32805 x1 and du = 32805 x 1
+            [du]= Kres\R; % Kres = 32805 x 32805 and R = 32805 x1 and du = 32805 x 1 [ Matrix right division ]
             du1 = du(1:total_disp,1); % Displacement increment vector
             du2 = du((total_disp+1):total_unknown,1); % Non-Equivalent Strain increment vector
             u_tot = u_tot + du1; % Updating displacement vector
