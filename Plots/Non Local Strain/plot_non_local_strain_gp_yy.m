@@ -1,4 +1,4 @@
-function plot_non_local_strain_gp() 
+function plot_non_local_strain_gp_yy
 % -----------------------Description------------------------------
 % Contour Plot of the Vertical Micromorphic strain at each gauss point.
 %load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
@@ -17,17 +17,7 @@ non_local_strains = STRAIN_NON_LOCAL_YY;
 guass_point_locations = GPT_DATA;
 %vertical_non_local_strain = zeros(nRows/3,n1*n2);
 
-% for k1 = 1:n1
-%     for k2 = 1:n2
-%         st = steps(k1,k2);
-%         ind = 1;
-%         for i = 2 : 3 : nRows 
-%             vertical_non_local_strain(ind,st) = non_local_strains(i,st);
-%             ind = ind + 1;
-%         end 
-%     end
-% end 
-
+figure;
 for k1 = 1:n1
     for k2 = 1:n2
             st = steps(k1,k2);

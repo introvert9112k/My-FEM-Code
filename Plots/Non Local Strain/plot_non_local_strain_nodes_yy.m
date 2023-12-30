@@ -1,12 +1,13 @@
-function plot_non_local_strain_nodes
+function plot_non_local_strain_nodes_yy
 % -----------------------Description------------------------------
 % Contour Plot of the Vertical Micromorphic strain at each Node
-load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
+%load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
 %load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Tension_cycle.mat');
+load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.012.mat');
 % subplot dimension
 
-steps = [1,2,3,4,5; 6,7,8,9,10; 11,12,13,14,15;16,17,18,19,20];
-%steps = [1,2,3,4,5; 6,7,8,9,10];
+%steps = [1,2,3,4,5; 6,7,8,9,10; 11,12,13,14,15;16,17,18,19,20];
+steps = [1,2,3,4,5; 6,7,8,9,10];
 n1 = size(steps,1); % number of rows
 n2 = size(steps,2); % number of columns
 
@@ -26,6 +27,7 @@ for k1 = 1:n1
     end
 end 
 
+figure;
 for k1 = 1:n1
     for k2 = 1:n2
             st = steps(k1,k2);
@@ -43,4 +45,5 @@ for k1 = 1:n1
             colorbar;
     end
 end 
+sgtitle('Non Local Strain At Nodes YY');
 end 

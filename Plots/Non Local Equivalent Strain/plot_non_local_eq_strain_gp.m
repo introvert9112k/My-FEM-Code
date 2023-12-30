@@ -34,7 +34,6 @@ function plot_non_local_eq_strain_gp
 
 %--------------------- For multiple load steps-----------------------
 %--------------------- Micro-morphic-equivalent-strain-plot--------------------------%
-figure;
 %load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Tension_cycle.mat');
 %load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
 load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.012.mat');
@@ -48,6 +47,7 @@ n2 = size(steps,2); % number of columns
 guass_point_locations = GPT_DATA;
 micromorphic_equivalent_strain = NESTRAIN_DATA;
 
+figure;
 for k1 = 1:n1
     for k2 = 1:n2
             st = steps(k1,k2);
