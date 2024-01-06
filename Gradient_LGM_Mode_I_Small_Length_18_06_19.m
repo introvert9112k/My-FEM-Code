@@ -341,4 +341,4 @@ for step = 1 : nsteps
 % end 
 disp([num2str(toc),'  END OF NEWTON RAPHSON LOOP'])
 
-% End of MaiN PrograM COde functioN 
+% End of MaiN PrograM Code Function.
