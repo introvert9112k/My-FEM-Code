@@ -107,7 +107,7 @@ for iel = 1:numelem % Loop on elements
         
         if AA_nl <= tol
             AA_nl = tol;
-        end
+        end 
         
         eps_l = a1*(a2*I1_l + sqrt(AA_l)); % Equivalent Strain from Strain Vector
         eps_nl = a1*(a2*I1_nl + sqrt(AA_nl)); % Micromorphic Equivalent Strain from micromorphic strain tensor
@@ -343,11 +343,14 @@ for iel = 1:numelem % Loop on elements
     end
             
 %     Stif(a,b) = Stif(a,b) + stif_temp;
-    
+    [K] = assemble_global_stiffness(total_unknown,sctr1,sctr3,Stif1,Stif2,Stif3,Stif4);
+
     fai(sctr1',1) = fai(sctr1',1) + fai_gpt;
     fe(sctr2',1) = fe(sctr2',1) + fe_gpt;
 end                      % end of looping on elements
 
-Stif = sparse(I,J,S,total_unknown,total_unknown);
+Stif = K;
+% Stif = sparse(I,J,S,total_unknown,total_unknown);
 
-end 
+end   
+% For checking purpose.

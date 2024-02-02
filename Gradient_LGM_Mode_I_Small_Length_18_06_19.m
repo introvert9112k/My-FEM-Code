@@ -10,8 +10,8 @@ tic;
 close all;
 L = 60; % Length of the plate
 D = 60; % Width of the plate
-numx = 80; % Number of elements in X direction
-numy = 80; % Number of elements in Y direction
+numx = 20; % Number of elements in X direction
+numy = 20; % Number of elements in Y direction
 stressState='PLANE_STRAIN'; %This defines the stressState chosen
 
 
@@ -197,6 +197,7 @@ nsteps = 10;
 forcevdisp = zeros(2,nsteps+1);
 forcevdisp(1,1) = 0;
 forcevdisp(2,1) = 0;
+
 for step = 1 : nsteps 
         err3 = 1; %this is for intial tolerance.
         nit = 0;  %current iterations for this step
@@ -204,7 +205,7 @@ for step = 1 : nsteps
         fprintf(1,'\n Step %f \n',step);
         
         if step <= 5  
-               %ubar = 0.0015; 
+               %ubar = 0.002136; 
                ubar = 0.012;
         elseif step > 5 && step <= 10 
                loadingType = 'compression';
@@ -285,7 +286,7 @@ for step = 1 : nsteps
             end 
             
             %------Solve for the correction---------%
-            [du]= Kres\R; % Kres = 32805 x 32805 and R = 32805 x1 and du = 32805 x 1 [ Matrix right division ]
+            [du]= inv(Kres)*R; % Kres = 32805 x 32805 and R = 32805 x1 and du = 32805 x 1 [ Matrix right division ]
             du1 = du(1:total_disp,1); % Displacement increment vector
             du2 = du((total_disp+1):total_unknown,1); % Non-Equivalent Strain increment vector
             u_tot = u_tot + du1; % Updating displacement vector
@@ -302,7 +303,7 @@ for step = 1 : nsteps
             err3 = sqrt((err3)/(2*numnode1));
             fprintf(1,'Iteration number %d Correction-u %f Correction-ne %f Residual %f tolerance %f\n',nit,err1,err2,err3,tol);
         end
-           
+            
             DAMAGE_DATA(:,step) = D_st;
             NESTRAIN_DATA(:,step) = NE_gp;
             GPT_DATA = Gpnt;
