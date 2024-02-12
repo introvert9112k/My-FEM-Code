@@ -10,8 +10,8 @@ tic;
 close all;
 L = 60; % Length of the plate
 D = 60; % Width of the plate
-numx = 20; % Number of elements in X direction
-numy = 20; % Number of elements in Y direction
+numx = 1; % Number of elements in X direction
+numy = 1; % Number of elements in Y direction
 stressState='PLANE_STRAIN'; %This defines the stressState chosen
 
 
@@ -193,7 +193,7 @@ disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
 temp_ubar = 0;
  % Number of Load Increments i.e. Load is applied in "nsteps" increments 
 loadingType = 'tension';
-nsteps = 10;
+nsteps = 20;
 forcevdisp = zeros(2,nsteps+1);
 forcevdisp(1,1) = 0;
 forcevdisp(2,1) = 0;
@@ -205,11 +205,12 @@ for step = 1 : nsteps
         fprintf(1,'\n Step %f \n',step);
         
         if step <= 5  
-               %ubar = 0.002136; 
-               ubar = 0.012;
+               ubar = 0.002136; 
+               %ubar = 0.0015; 
         elseif step > 5 && step <= 10 
                loadingType = 'compression';
                %ubar = -0.0015; 
+               %ubar = -0.002136;
                ubar = -0.012;
         elseif step > 10 && step <= 15 
                %ubar = 0.0015;
@@ -333,11 +334,11 @@ for step = 1 : nsteps
             % save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
             %     'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
 
-             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle_0.012.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
+             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle_0.002136.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
                 'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS','node1','element1','STRAIN_LOCAL_XX', ...
                 'STRAIN_LOCAL_YY','STRAIN_LOCAL_XY','STRAIN_NON_LOCAL_XX','STRAIN_NON_LOCAL_YY','STRAIN_NON_LOCAL_XY','EQ_STRAIN');
     end
 % end 
 disp([num2str(toc),'  END OF NEWTON RAPHSON LOOP'])
 
-% End of MaiN PrograM COde functioN 
+% End of MaiN PrograM Code Function.

@@ -1,6 +1,6 @@
 function plot_local_equivalent_strain
-%load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
-load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.012.mat');
+load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
+%load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.012.mat');
 % subplot dimension
 
 %steps = [1,2,3,4,5; 6,7,8,9,10; 11,12,13,14,15; 16,17,18,19,20];
@@ -11,6 +11,7 @@ n2 = size(steps,2); % number of columns
 guass_point_locations = GPT_DATA;
 local_equivalent_strain = EQ_STRAIN;
 
+figure;
 for k1 = 1:n1
     for k2 = 1:n2
             st = steps(k1,k2);
@@ -29,4 +30,4 @@ for k1 = 1:n1
     end
 end 
 sgtitle('Local Equivalent Strain');
-end 
+end  

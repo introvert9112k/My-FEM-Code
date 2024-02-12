@@ -9,6 +9,7 @@ n2 = size(steps,2); % number of columns
 guass_point_locations = GPT_DATA;
 local_equivalent_stress = EQ_STRESS;
 
+figure;
 for k1 = 1:n1
     for k2 = 1:n2
             st = steps(k1,k2);

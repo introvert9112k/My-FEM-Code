@@ -303,15 +303,7 @@ for iel = 1:numelem % Loop on elements
 
         Stif4 = Stif4 + (Coff6)*W(kk)*det(J01)*th; % kee (12x12)
         
-        % if ubar > 0 
-        %     fai_gpt = fai_gpt - (B1'*stress_gpt)*W(kk)*det(J01)*th; % B'.stress = Force. B1 = 3x8 and B1' = 8x3 stress_gpt = 3x1 fai_gpt = 8x1 size 
-        % 
-        %     fe_gpt = fe_gpt - (N2'*conjugate_stress_gpt + B2'*xit_gpt)*W(kk)*det(J01)*th; % N2 = 3x12, N2' = 12x3 and coupling stress = 3x1 = 12x1 + B2 = 6x12 B2' = 12x6 xi_gpt = 6x1 total = 12x1 So fe_gpt = 12x1
-        % else 
-        %     fai_gpt = fai_gpt + (B1'*stress_gpt)*W(kk)*det(J01)*th;
-        %     fe_gpt = fe_gpt + (N2'*conjugate_stress_gpt + B2'*xit_gpt)*W(kk)*det(J01)*th;
-        % end 
-        
+       
         fai_gpt = fai_gpt - (B1'*stress_gpt)*W(kk)*det(J01)*th;
         fe_gpt  = fe_gpt - (N2'*conjugate_stress_gpt + B2'*xit_gpt)*W(kk)*det(J01)*th;
 
