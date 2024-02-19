@@ -1,7 +1,7 @@
 function plot_displacement_u2 
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
+load('Mode_I_steps_20_1_by_1_Eta_4_R04_SmallLenScale_Beta_9.mat');
 % subplot dimension
 
 steps = [1,2,3,4,5; 6,7,8,9,10; 11,12,13,14,15; 16,17,18,19,20];

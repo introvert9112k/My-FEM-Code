@@ -36,7 +36,7 @@ function plot_non_local_eq_strain_gp
 %--------------------- Micro-morphic-equivalent-strain-plot--------------------------%
 %load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_Tension_cycle.mat');
 %load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
-load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.012.mat');
+load('Mode_I_steps_20_1_by_1_Eta_4_R04_SmallLenScale_Beta_9.mat');
 % subplot dimension
 
 %steps = [1,2,3,4,5; 6,7,8,9,10; 11,12,13,14,15; 16,17,18,19,20];

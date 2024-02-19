@@ -10,10 +10,9 @@ tic;
 close all;
 L = 60; % Length of the plate
 D = 60; % Width of the plate
-numx = 1; % Number of elements in X direction
-numy = 1; % Number of elements in Y direction
+numx = 80; % Number of elements in X direction
+numy = 80; % Number of elements in Y direction
 stressState='PLANE_STRAIN'; %This defines the stressState chosen
-
 
 %---------------------Material Parameters------------------%
 nu = 0.2;  % Poisson's Ratio
@@ -193,7 +192,7 @@ disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
 temp_ubar = 0;
  % Number of Load Increments i.e. Load is applied in "nsteps" increments 
 loadingType = 'tension';
-nsteps = 20;
+nsteps = 10;
 forcevdisp = zeros(2,nsteps+1);
 forcevdisp(1,1) = 0;
 forcevdisp(2,1) = 0;
@@ -203,35 +202,15 @@ for step = 1 : nsteps
         nit = 0;  %current iterations for this step
         Fint = zeros(total_unknown,1);
         fprintf(1,'\n Step %f \n',step);
-        
-        if step <= 5  
-               ubar = 0.002136; 
-               %ubar = 0.0015; 
-        elseif step > 5 && step <= 10 
-               loadingType = 'compression';
-               %ubar = -0.0015; 
-               %ubar = -0.002136;
-               ubar = -0.012;
-        elseif step > 10 && step <= 15 
-               %ubar = 0.0015;
-               ubar = 0.012;
-        else 
-              %ubar = -0.0015;
-              ubar = -0.012;
-        % elseif step > 10
-        %         ubar = 0.002; 
-        
-        end 
+        % -------------Original Montonic Loading-----------------
+        if step <= 5 
+              ubar = 0.012; %displacement for the steps <= 5    
+        elseif step > 5 
+              ubar = 3e-3; %displacement for the steps > 5.
+        end
+       
         temp_ubar = temp_ubar + ubar;
         disp([num2str(step)," ",num2str(temp_ubar)]);
-
-        % -------------Original Montonic Loading-----------------
-        %     if step <= 5 
-        %           ubar = 0.012; %displacement for the steps <= 5    
-        %     elseif step > 5 
-        %           ubar = 3e-3; %displacement for the steps > 5.
-        %     end
-
     
         %Iterate until either the answer is converged or max iterations are 
         %reached.
@@ -287,7 +266,7 @@ for step = 1 : nsteps
             end 
             
             %------Solve for the correction---------%
-            [du]= inv(Kres)*R; % Kres = 32805 x 32805 and R = 32805 x1 and du = 32805 x 1 [ Matrix right division ]
+            [du]= Kres\R; % Kres = 32805 x 32805 and R = 32805 x1 and du = 32805 x 1 [ Matrix right division ]
             du1 = du(1:total_disp,1); % Displacement increment vector
             du2 = du((total_disp+1):total_unknown,1); % Non-Equivalent Strain increment vector
             u_tot = u_tot + du1; % Updating displacement vector
@@ -334,10 +313,10 @@ for step = 1 : nsteps
             % save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
             %     'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
 
-             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle_0.002136.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
+             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
                 'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS','node1','element1','STRAIN_LOCAL_XX', ...
                 'STRAIN_LOCAL_YY','STRAIN_LOCAL_XY','STRAIN_NON_LOCAL_XX','STRAIN_NON_LOCAL_YY','STRAIN_NON_LOCAL_XY','EQ_STRAIN');
-    end
+end
 % end 
 disp([num2str(toc),'  END OF NEWTON RAPHSON LOOP'])
 
