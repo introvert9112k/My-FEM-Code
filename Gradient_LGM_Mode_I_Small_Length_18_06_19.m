@@ -14,12 +14,13 @@ numx = 80; % Number of elements in X direction
 numy = 80; % Number of elements in Y direction
 stressState='PLANE_STRAIN'; %This defines the stressState chosen
 
-%---------------------Material Parameters------------------%
+%---------------------Material Parameters------------------% 
 nu = 0.2;  % Poisson's Ratio
 E  = 1000; % Elastic Moduli,in MPa
 cc = 0.04*L; % Internal length i.e. Small Length Scale paramter L/25
 h = 1;
-material_p =[nu, E, cc, h]; % Material Parameters
+material_p =[nu, E, cc, h]; % Material Parameters 
+
 
 % Newton-Raphson Parameters
 tol = 0.00001; % Tolerance Value to check Newton-Raphson convergence
@@ -36,7 +37,6 @@ R = 0.04; %require in interaction function g.
 eta = 4; %require in interaction function g.
 ft = 2;  % Tensile Strength in MPa
 damage_p =[K alpha beta hcoup R eta]; % Damage Parameters
-
 
 %-------------------------------Stiffness Matrix D--------------------------------------%
 %If the stae of stress is plane stress
