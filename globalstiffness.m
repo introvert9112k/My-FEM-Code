@@ -341,8 +341,7 @@ for iel = 1:numelem % Loop on elements
     fe(sctr2',1) = fe(sctr2',1) + fe_gpt;
 end                      % end of looping on elements
 
-% Stif = K;
+%Stif = K;
 Stif = sparse(I,J,S,total_unknown,total_unknown);
-
 end   
 % For checking purpose.

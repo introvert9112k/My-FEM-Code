@@ -14,13 +14,13 @@ numx = 80; % Number of elements in X direction
 numy = 80; % Number of elements in Y direction
 stressState='PLANE_STRAIN'; %This defines the stressState chosen
 
-
-%---------------------Material Parameters------------------%
+%---------------------Material Parameters------------------% 
 nu = 0.2;  % Poisson's Ratio
 E  = 1000; % Elastic Moduli,in Pa
 cc = 0.04*L; % Internal length i.e. Small Length Scale paramter L/25
 h = 1;
-material_p =[nu, E, cc, h]; % Material Parameters
+material_p =[nu, E, cc, h]; % Material Parameters 
+
 
 % Newton-Raphson Parameters
 tol = 0.00001; % Tolerance Value to check Newton-Raphson convergence
@@ -37,7 +37,6 @@ R = 0.04; %require in interaction function g.
 eta = 4; %require in interaction function g.
 ft = 2;  % Tensile Strength in MPa
 damage_p =[K alpha beta hcoup R eta]; % Damage Parameters
-
 
 %-------------------------------Stiffness Matrix D--------------------------------------%
 %If the stae of stress is plane stress
@@ -204,7 +203,8 @@ for step = 1 : nsteps
         Fint = zeros(total_unknown,1);
         fprintf(1,'\n Step %f \n',step);
 
-        %-------------Original Montonic Loading-----------------
+        % -------------Original Montonic Loading-----------------
+
         if step <= 5 
               ubar = 0.012; %displacement for the steps <= 5    
         elseif step > 5 
@@ -213,7 +213,7 @@ for step = 1 : nsteps
 
         temp_ubar = temp_ubar + ubar;
         disp([num2str(step)," ",num2str(temp_ubar)]);
-
+    
         %Iterate until either the answer is converged or max iterations are 
         %reached.
         while ((err3>tol) && (nit<maxit))          % Newton Raphson loop
@@ -315,7 +315,7 @@ for step = 1 : nsteps
             % save('Mode_I_steps1_80by80_Eta_4_R04_SmallLenScale_Beta9.mat','DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
             %     'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS');
 
-             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d_cycle_0.002136.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
+             save(sprintf('Mode_I_steps_%d_%d_by_%d_Eta_%d_R04_SmallLenScale_Beta_%d.mat',nsteps,numx,numy,eta,beta),'DAMAGE_DATA','NESTRAIN_DATA','GPT_DATA','forcevdisp','DISP_DATA','NESTRAIN_DATA_NODES','INTERNAL_FORCE',...
                 'INTERACTION_DATA','SIGMA_XX','SIGMA_YY','SIGMA_XY','SIGMA_XX_smooth','SIGMA_YY_smooth','SIGMA_XY_smooth','EQ_STRESS','NEQ_STRESS','node1','element1','STRAIN_LOCAL_XX', ...
                 'STRAIN_LOCAL_YY','STRAIN_LOCAL_XY','STRAIN_NON_LOCAL_XX','STRAIN_NON_LOCAL_YY','STRAIN_NON_LOCAL_XY','EQ_STRAIN');
 end

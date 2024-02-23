@@ -1,15 +1,11 @@
 function plot_damage_gp
 % -----------------------Description------------------------------
 % Contour Plot of the Vertical Micromorphic strain at each gauss point.
-%load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
-%load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_temp_cycle.mat');
-%load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.012.mat');
-load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.002136.mat');
+load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9.mat');
 % subplot dimension
 
-
 %steps = [1,2,3,4,5; 6,7,8,9,10;11,12,13,14,15;16,17,18,19,20];
-steps = [1,2,3,4,5; 6,7,8,9,10];
+steps = [5];
 %steps = [1,2,3,4; 6,7,8,9];
 n1 = size(steps,1); % number of rows
 n2 = size(steps,2); % number of columns
@@ -36,5 +32,5 @@ for k1 = 1:n1
             colorbar;
     end
 end
-sgtitle('Plot Non local Strain'); 
+sgtitle('Plot Damage'); 
 end 
