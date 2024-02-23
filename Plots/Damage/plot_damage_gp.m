@@ -4,7 +4,7 @@ function plot_damage_gp
 %load('Mode_I_steps_20_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle.mat');
 %load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_temp_cycle.mat');
 %load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.012.mat');
-%load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.002136.mat');
+load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9_cycle_0.002136.mat');
 % subplot dimension
 
 
