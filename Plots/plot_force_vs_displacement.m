@@ -7,7 +7,8 @@ numy = 60; % Number of elements in Y direction
 
 loading = 'Tension';
 % loading = 'Compression';
-load('Mode_I_steps_20_1_by_1_Eta_4_R04_SmallLenScale_Beta_9.mat');
+%load('Mode_I_steps_20_1_by_1_Eta_4_R04_SmallLenScale_Beta_9.mat');
+load('Mode_I_steps_10_80_by_80_Eta_4_R04_SmallLenScale_Beta_9.mat');
 
 %------------------Material Parameters------------------%
 if (strcmp(loading,'Tension') )

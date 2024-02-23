@@ -10,8 +10,8 @@ tic;
 close all;
 L = 60; % Length of the plate
 D = 60; % Width of the plate
-numx = 40; % Number of elements in X direction
-numy = 40; % Number of elements in Y direction
+numx = 80; % Number of elements in X direction
+numy = 80; % Number of elements in Y direction
 stressState='PLANE_STRAIN'; %This defines the stressState chosen
 
 
@@ -193,7 +193,7 @@ disp([num2str(toc),'  NEWTON RAPHSON LOOP BEGINS'])
 temp_ubar = 0;
  % Number of Load Increments i.e. Load is applied in "nsteps" increments 
 loadingType = 'tension';
-nsteps = 10;
+nsteps = 30;
 forcevdisp = zeros(2,nsteps+1);
 forcevdisp(1,1) = 0;
 forcevdisp(2,1) = 0;
@@ -204,12 +204,13 @@ for step = 1 : nsteps
         Fint = zeros(total_unknown,1);
         fprintf(1,'\n Step %f \n',step);
         % -------------Original Montonic Loading-----------------
-        if step <= 5 
-              ubar = 0.012; %displacement for the steps <= 5    
-        elseif step > 5 
-              ubar = 3e-3; %displacement for the steps > 5.
-        end
-       
+        % if step <= 5 
+        %       % ubar = 0.012; %displacement for the steps <= 5  
+        %       ubar = 1e-3;
+        % elseif step > 5 
+        %       ubar = 3e-3; %displacement for the steps > 5.
+        % end
+        ubar = 1e-3;
         temp_ubar = temp_ubar + ubar;
         disp([num2str(step)," ",num2str(temp_ubar)]);
     
